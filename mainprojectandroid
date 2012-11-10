@@ -1,0 +1,2507 @@
+A1 Android Application
+
+//A1about.java
+
+package de.test.hello;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.widget.TextView;
+
+public class A1about extends Activity {
+    /** Called when the activity is first created. */
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.mainabout);
+        
+        TextView helloTxt = (TextView)findViewById(R.id.hellotxt);
+        helloTxt.setText(readTxt());
+    }
+    
+    private String readTxt(){
+
+     InputStream inputStream = getResources().openRawResource(R.raw.hellotxt);
+     
+     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+     
+     int i;
+  try {
+   i = inputStream.read();
+   while (i != -1)
+      {
+       byteArrayOutputStream.write(i);
+       i = inputStream.read();
+      }
+      inputStream.close();
+  } catch (IOException e) {
+   // TODO Auto-generated catch block
+   e.printStackTrace();
+  }
+  
+     return byteArrayOutputStream.toString();
+    }
+}
+
+
+
+//A1Activity.java
+
+package de.test.hello;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+
+public class A1Activity extends Activity {
+    /** Called when the activity is first created. */
+	
+	protected int delay = 5000;
+	private Thread SplashThread;
+	
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main);
+        
+        final A1Activity sPlashScreen = this;
+        
+        SplashThread = new Thread()
+        {
+        	@Override
+            public void run()
+        	{
+        		try {
+                    	synchronized (this) {
+                    		// wait 5 sec
+                            	wait(delay);
+                            }
+                     } 
+        		catch (InterruptedException e)
+        		{
+        			//Exception handling
+                }
+        		finally
+        		{
+        			finish();
+
+                   // start a new activity
+                   Intent i = new Intent();
+                   i.setClass(sPlashScreen, A1first.class);
+                   startActivity(i);
+
+                   stop();
+                 }
+            }
+        };
+
+        SplashThread.start();
+   }
+}
+
+//A1first.java
+
+package de.test.hello;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+
+public class A1first extends Activity implements OnClickListener {
+    /** Called when the activity is first created. */
+	private Button testbtn;
+	private Button resetbtn;
+	private Button aboutbtn;
+	private Button exitbtn;
+	private Button helpbtn;
+	
+	
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main2);
+        
+        testbtn = (Button)findViewById(R.id.button1);
+        testbtn.setOnClickListener(this);
+        resetbtn = (Button)findViewById(R.id.button2);
+        resetbtn.setOnClickListener(this);
+        aboutbtn = (Button)findViewById(R.id.button3);
+        aboutbtn.setOnClickListener(this);
+        exitbtn = (Button)findViewById(R.id.button4);
+        exitbtn.setOnClickListener(this);
+        helpbtn = (Button)findViewById(R.id.button5);
+        helpbtn.setOnClickListener(this);
+        
+        
+    
+    }
+
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		
+		if(v == testbtn)
+		{
+			startActivity(new Intent(this, A1second.class));
+			/*new AlertDialog.Builder(this)
+			.setMessage(R.string.tst)
+			.setNeutralButton(R.string.error_ok, null)
+			.show();
+		return;*/
+		}
+		if(v == resetbtn)
+		{
+			startActivity(new Intent(this, A1third.class));
+		}
+		if(v == aboutbtn)
+		{
+			startActivity(new Intent(this, A1about.class));
+			/*new AlertDialog.Builder(this)
+			.setMessage(R.string.abt)
+			.setNeutralButton(R.string.error_ok, null)
+			.show();
+		return;*/
+		}
+		if(v == exitbtn)
+		{
+			new AlertDialog.Builder(this)
+			.setMessage(R.string.ext)
+			.setNeutralButton(R.string.error_ok, null)
+			.show();
+		return;
+		}
+		if(v == helpbtn)
+		{
+			startActivity(new Intent(this, A1help.class));
+		}
+	}
+}
+
+//A1second.java
+
+package de.test.hello;
+import java.io.BufferedReader;
+
+import java.io.File;
+ 
+import java.io.FileInputStream;
+ 
+import java.io.FileNotFoundException;
+ 
+import java.io.IOException;
+ 
+import java.io.InputStreamReader;
+ 
+import android.os.Environment;
+ 
+import android.util.Log;
+ 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.RandomAccessFile;
+import java.util.Random;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+@SuppressWarnings("unused")
+public class A1second extends Activity implements OnClickListener {
+	private static final File root = android.os.Environment.getExternalStorageDirectory();
+    /** Called when the activity is first created. */
+	private Button okbtn;
+	
+	
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main3);
+        
+        okbtn = (Button)findViewById(R.id.button1);
+        okbtn.setOnClickListener(this);
+        
+        //finish();
+        
+    
+    }
+
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		EditText edit_Text1 = (EditText) findViewById(R.id.editText1);
+		String name1 = edit_Text1.getText().toString();
+		if(name1.length()==0){
+			new AlertDialog.Builder(this)
+					.setMessage(R.string.error_text1_missing)
+					.setNeutralButton(R.string.error_ok, null)
+					.show();
+			return;
+		}
+		EditText edit_Text2 = (EditText) findViewById(R.id.editText2);
+		String name2 = edit_Text2.getText().toString();
+		if(name2.length()==0){
+			new AlertDialog.Builder(this)
+					.setMessage(R.string.error_text2_missing)
+					.setNeutralButton(R.string.error_ok, null)
+					.show();
+			return;
+		}
+		EditText edit_Text3 = (EditText) findViewById(R.id.editText3);
+		String name3 = edit_Text3.getText().toString();
+		if(name3.length()==0){
+			new AlertDialog.Builder(this)
+					.setMessage(R.string.error_text3_missing)
+					.setNeutralButton(R.string.error_ok, null)
+					.show();
+			return;
+		}
+		EditText edit_Text4 = (EditText) findViewById(R.id.editText4);
+		String name4 = edit_Text4.getText().toString();
+		if(name4.length()==0){
+			new AlertDialog.Builder(this)
+					.setMessage(R.string.error_text4_missing)
+					.setNeutralButton(R.string.error_ok, null)
+					.show();
+			return;
+		}
+		double d1 = 0;
+		double d2 = 0;
+		double d3 = 0;
+		double d4 = 0;
+
+		try{
+			   d1 = Double.valueOf(name1.trim()).doubleValue();
+			         	  }
+			  catch (NumberFormatException e){
+			  System.out.println("NumberFormatException: " + e.getMessage());
+			  }
+		if(d1>1024.00)
+		{
+			new AlertDialog.Builder(this)
+			.setMessage(R.string.range_error1)
+			.setNeutralButton(R.string.error_ok, null)
+			.show();
+		return;
+		}
+		try{
+			   d2 = Double.valueOf(name2.trim()).doubleValue();
+			         	  }
+			  catch (NumberFormatException e){
+			  System.out.println("NumberFormatException: " + e.getMessage());
+			  }
+		if(d2>1024.00)
+		{
+			new AlertDialog.Builder(this)
+			.setMessage(R.string.range_error2)
+			.setNeutralButton(R.string.error_ok, null)
+			.show();
+		return;
+		}
+		try{
+		 d3 = Double.valueOf(name3.trim()).doubleValue();
+		       	  }
+		catch (NumberFormatException e){
+		System.out.println("NumberFormatException: " + e.getMessage());
+		}
+		if(d3>1024.00)
+		{
+		new AlertDialog.Builder(this)
+		.setMessage(R.string.range_error3)
+		.setNeutralButton(R.string.error_ok, null)
+		.show();
+		return;
+		}
+		try{
+		d4 = Double.valueOf(name4.trim()).doubleValue();
+		     	  }
+		catch (NumberFormatException e){
+		System.out.println("NumberFormatException: " + e.getMessage());
+		}
+		if(d4>1024.00)
+		{
+		new AlertDialog.Builder(this)
+		.setMessage(R.string.range_error4)
+		.setNeutralButton(R.string.error_ok, null)
+		.show();
+		return;
+		}
+
+		if(v == okbtn)
+		{
+			int resourceId;
+				resourceId=R.string.success;
+				
+			
+			String greeting1 = getResources().getString(resourceId,name1);
+			Toast.makeText(this,greeting1, Toast.LENGTH_LONG).show();
+			
+			        	}
+		nework(d1,d2,d3,d4);
+				
+			}
+
+			private void nework(double d1,double d2,double d3,double d4) {
+				
+				// TODO Auto-generated method stub
+				 double wts1[]=new double[4];
+				 double wts2[][]=new double[6][2];
+				 double wts3[][]=new double [4][3];
+				 double wts4[]=new double [4];
+				 double wts5[]=new double [4];
+				 double wts6[]=new double[6];
+				 double wts7[]=new double[4];
+				 double wts8[]=new double [2];
+				 double wts9[]=new double [2];
+				 double wts10[]=new double[2];
+				 double alpha=0;
+				 double treshold[]=new double [21];
+				 int FLAG;
+				 double inputs[]=new double[4];
+				
+				Random randomGenerator = new Random();
+				
+				/*//LOW TRESHOLD RANGE FOR SINGLE INPUT NODES
+
+				for (int idx = 0; idx <= 3; ++idx)
+				{
+			      		double randomInt = randomInRange(500.0,1000.0);
+			      		
+					treshold[idx]=randomInt;
+					
+				}
+
+				//SLIGHTLY HIGHER TRESHOLD RANGE FOR TWO INPUT NODES OF FIRST HIDDEN LAYER
+
+				for (int idx = 4; idx <= 9; ++idx)
+				{
+			      		double randomInt = randomInRange(1000.0,1250.0);
+			      		
+					treshold[idx]=randomInt;
+				
+				}
+
+				//SLIGHTLY MORE HIGHER TRESHOLD RANGE FOR THREE INPUT NODES
+
+				for (int idx = 10; idx <=13 ; ++idx)
+				{
+			      		double randomInt = randomInRange(1250.0,1500.0);
+			      		
+					treshold[idx]=randomInt;
+				
+				}
+
+				//MEDIUM RANGE FOR FOUR AND SIX INPUT NODES IN THE FIRST AND SECOND INPUT LAYERS
+
+				for (int idx = 13; idx <=17 ; ++idx)
+				{
+			      		double randomInt = randomInRange(1500.0,1700.0);
+			      		
+					treshold[idx]=randomInt;
+				
+				}
+				
+				// HIGH RANGE OF TRESHOLDS FOR NODES IN THE LAST HIDDEN LAYER
+		 
+				for (int idx = 17; idx <=19 ; ++idx)
+				{
+			      		double randomInt = randomInRange(1700.0,1900.0);
+			      		
+					treshold[idx]=randomInt;
+				
+				}
+				
+				// VERY HIGH RANGE TRESHOLD FOR THE OUTPUT NODE
+
+				for (int idx = 20; idx <=20 ; ++idx)
+				{
+			      		double randomInt = randomInRange(1900.0,2300.0);
+			      		
+					treshold[idx]=randomInt;
+				
+				}
+
+				//SETTING WEIGHTS TO EACH NODE INPUTS AS Wtsi= (1/SQRT(N)[1 1 1 ... 1]) WHERE N IS THE NUMBER OF INPUTS
+		 
+				//double wts1[]=new double[4];
+				for (int idx = 0; idx <= 3; ++idx)
+					wts1[idx]=1;
+
+				//double wts2[][]=new double[6][2];
+				for (int idx = 0; idx <= 5; ++idx)
+					for(int i=0;i<=1;i++)
+						wts2[idx][i]=1/(Math.sqrt(2));
+
+				//double wts3[][]=new double [4][3];
+				for (int idx = 0; idx <= 3; ++idx)
+					for(int i=0;i<=2;i++)
+						wts3[idx][i]=1/(Math.sqrt(3));
+
+				//double wts4[]=new double [4];
+				for (int idx = 0; idx <= 3; ++idx)
+					wts4[idx]=1/(Math.sqrt(4));
+				
+
+				//double wts5[]=new double [4];
+				for (int idx = 0; idx <= 3; ++idx)
+					wts5[idx]=1/(Math.sqrt(4));
+				
+				//double wts6[]=new double[6];
+				for (int idx = 0; idx <= 5; ++idx)
+					wts6[idx]=1/(Math.sqrt(6));
+			
+				//double wts7[]=new double[4];
+				for (int idx = 0; idx <= 3; ++idx)
+					wts7[idx]=1/(Math.sqrt(4));
+
+				//double wts8[]=new double [2];
+				for (int idx = 0; idx <= 1; ++idx)
+					wts8[idx]=1/(Math.sqrt(2));
+				
+
+				//double wts9[]=new double [2];
+				for (int idx = 0; idx <= 1; ++idx)
+					wts9[idx]=1/(Math.sqrt(2));
+
+				//double wts10[]=new double[2];
+				for (int idx = 0; idx <= 1; ++idx)
+					wts10[idx]=1/(Math.sqrt(2));
+				
+				
+				while(FLAG<30000)
+				{
+
+					//GENERATING RANDOM INPUTS, 4 OF THEM A,B,C, AND D
+			
+					for (int idx = 0; idx <= 3; ++idx)
+					{
+				      		double randomInt = randomInRange(200.0,1024.0);
+						inputs[idx]=randomInt;	
+					}
+
+					//SETTING THE FIRST FOUR NODES OF THE FIRST HIDDEN LAYER, EACH HAVING A SINGLE INPUT
+
+					double A=(double)inputs[0]*wts1[0];
+					double B=(double)inputs[1]*wts1[1];
+					double C=(double)inputs[2]*wts1[2];
+					double D=(double)inputs[3]*wts1[3];
+				
+					// FINDING THE WINNER
+
+					double large = Math.max(A,(Math.max(B,(Math.max(C,D)))));
+
+					// UPDATING THE WINNER NODE(S)
+
+					if(A==large)
+					{
+						wts1[0]=1;
+					}
+					if(B==large)
+					{
+						wts1[1]=1;
+					}
+					if(C==large)
+					{
+						wts1[2]=1;
+					}
+					if(D==large)
+					{
+						wts1[3]=1;
+					}
+			
+					//SETTING THE TWO INPUT NODES OF THE FIRST INPUT LAYER, 6 OF THEM
+			
+					double AB=((double)inputs[0]*wts2[0][0])+((double)inputs[1]*wts2[0][1]);
+					double AC=((double)inputs[0]*wts2[1][0])+((double)inputs[2]*wts2[1][1]);
+					double AD=((double)inputs[0]*wts2[2][0])+((double)inputs[3]*wts2[2][1]);
+					double BC=((double)inputs[1]*wts2[3][0])+((double)inputs[2]*wts2[3][1]);
+					double BD=((double)inputs[1]*wts2[4][0])+((double)inputs[3]*wts2[4][1]);
+					double CD=((double)inputs[2]*wts2[5][0])+((double)inputs[3]*wts2[5][1]);
+			
+					// FINDING THE WINNER
+			
+					double large1 = Math.max(AB,(Math.max(AC,(Math.max(AD,(Math.max(BC,(Math.max(BD,CD)))))))));
+			
+					//UPDATING THE WINNER NODE(S)
+			
+					/* UPDATE LIKE
+						NEW WEIGHT = (OLD WEIGHT/NORMALIZED OLD INPUT VECTOR) + (LEARNING CONSTANT * (INPUT - (OLD WEIGHT/NORMALIZED OLD INPUT VECTOR)))
+
+						IF INPUT VECTOR = [A B],
+						THEN NORMALIZED INPUT VECTOR = SQURE ROOT((A*A)+(B*B))*/
+
+					/*if(AB==large1)
+					{
+						wts2[0][0]=(wts2[0][0]/Math.sqrt((wts2[0][0]*wts2[0][0])+(wts2[0][1]*wts2[0][1])))+(alpha*(A-(wts2[0][0]/Math.sqrt((wts2[0][0]*wts2[0][0])+(wts2[0][1]*wts2[0][1])))));
+
+						wts2[0][1]=(wts2[0][1]/Math.sqrt((wts2[0][0]*wts2[0][0])+(wts2[0][1]*wts2[0][1])))+(alpha*(B-(wts2[0][1]/Math.sqrt((wts2[0][0]*wts2[0][0])+(wts2[0][1]*wts2[0][1])))));
+					}
+
+					if(AC==large1)
+					{
+						wts2[1][0]=(wts2[1][0]/Math.sqrt((wts2[1][0]*wts2[1][0])+(wts2[1][1]*wts2[1][1])))+(alpha*(A-(wts2[1][0]/Math.sqrt((wts2[1][0]*wts2[1][0])+(wts2[1][1]*wts2[1][1])))));
+
+						wts2[1][1]=(wts2[1][1]/Math.sqrt((wts2[1][0]*wts2[1][0])+(wts2[1][1]*wts2[1][1])))+(alpha*(C-(wts2[1][1]/Math.sqrt((wts2[1][0]*wts2[1][0])+(wts2[1][1]*wts2[1][1])))));
+					}
+
+					if(AD==large1)
+					{
+						wts2[2][0]=(wts2[2][0]/Math.sqrt((wts2[2][0]*wts2[2][0])+(wts2[2][1]*wts2[2][1])))+(alpha*(A-(wts2[2][0]/Math.sqrt((wts2[2][0]*wts2[2][0])+(wts2[2][1]*wts2[2][1])))));
+
+						wts2[2][1]=(wts2[2][1]/Math.sqrt((wts2[2][0]*wts2[2][0])+(wts2[2][1]*wts2[2][1])))+(alpha*(D-(wts2[2][1]/Math.sqrt((wts2[2][0]*wts2[2][0])+(wts2[2][1]*wts2[2][1])))));
+					}
+
+					if(BC==large1)
+					{
+						wts2[3][0]=(wts2[3][0]/Math.sqrt((wts2[3][0]*wts2[3][0])+(wts2[3][1]*wts2[3][1])))+(alpha*(B-(wts2[3][0]/Math.sqrt((wts2[3][0]*wts2[3][0])+(wts2[3][1]*wts2[3][1])))));
+
+						wts2[3][1]=(wts2[3][1]/Math.sqrt((wts2[3][0]*wts2[0][0])+(wts2[3][1]*wts2[3][1])))+(alpha*(C-(wts2[3][1]/Math.sqrt((wts2[3][0]*wts2[3][0])+(wts2[3][1]*wts2[3][1])))));
+					}
+
+					if(BD==large1)
+					{
+						wts2[4][0]=(wts2[4][0]/Math.sqrt((wts2[4][0]*wts2[4][0])+(wts2[4][1]*wts2[4][1])))+(alpha*(B-(wts2[4][0]/Math.sqrt((wts2[4][0]*wts2[4][0])+(wts2[4][1]*wts2[4][1])))));
+
+						wts2[4][1]=(wts2[4][1]/Math.sqrt((wts2[4][0]*wts2[4][0])+(wts2[4][1]*wts2[4][1])))+(alpha*(D-(wts2[4][1]/Math.sqrt((wts2[4][0]*wts2[4][0])+(wts2[4][1]*wts2[4][1])))));
+					}
+
+					if(CD==large1)
+					{
+						wts2[5][0]=(wts2[5][0]/Math.sqrt((wts2[5][0]*wts2[5][0])+(wts2[5][1]*wts2[5][1])))+(alpha*(C-(wts2[5][0]/Math.sqrt((wts2[5][0]*wts2[5][0])+(wts2[5][1]*wts2[5][1])))));
+
+						wts2[5][1]=(wts2[5][1]/Math.sqrt((wts2[5][0]*wts2[5][0])+(wts2[5][1]*wts2[5][1])))+(alpha*(D-(wts2[5][1]/Math.sqrt((wts2[5][0]*wts2[5][0])+(wts2[5][1]*wts2[5][1])))));
+					}
+
+					//SETTING THE THREE INPUT NODES OF THE FIRST HIDDEN LAYER
+
+					double ABC=((double)inputs[0]*wts3[0][0])+((double)inputs[1]*wts3[0][1])+((double)inputs[2]*wts3[0][2]);
+					double ABD=((double)inputs[0]*wts3[1][0])+((double)inputs[1]*wts3[1][1])+((double)inputs[3]*wts3[1][2]);
+					double ACD=((double)inputs[0]*wts3[2][0])+((double)inputs[2]*wts3[2][1])+((double)inputs[3]*wts3[2][2]);
+					double BCD=((double)inputs[1]*wts3[3][0])+((double)inputs[2]*wts3[3][1])+((double)inputs[3]*wts3[3][2]);
+			
+					//FINDING THE WINNER
+
+					double large2=Math.max(ABC,(Math.max(ABD,(Math.max(ACD,BCD)))));
+
+					//UPDATING THE WINNER NODE(S)
+
+					if(ABC==large2)
+					{
+						wts3[0][0]=(wts3[0][0]/Math.sqrt((wts3[0][0]*wts3[0][0])+(wts3[0][1]*wts3[0][1])+(wts3[0][2]*wts3[0][2])))+(alpha*(A-(wts3[0][0]/Math.sqrt((wts3[0][0]*wts3[0][0])+(wts3[0][1]*wts3[0][1])+(wts3[0][2]*wts3[0][2])))));
+
+						wts3[0][1]=(wts3[0][1]/Math.sqrt((wts3[0][0]*wts3[0][0])+(wts3[0][1]*wts3[0][1])+(wts3[0][2]*wts3[0][2])))+(alpha*(B-(wts3[0][1]/Math.sqrt((wts3[0][0]*wts3[0][0])+(wts3[0][1]*wts3[0][1])+(wts3[0][2]*wts3[0][2])))));
+
+						wts3[0][2]=(wts3[0][2]/Math.sqrt((wts3[0][0]*wts3[0][0])+(wts3[0][1]*wts3[0][1])+(wts3[0][2]*wts3[0][2])))+(alpha*(C-(wts3[0][2]/Math.sqrt((wts3[0][0]*wts3[0][0])+(wts3[0][1]*wts3[0][1])+(wts3[0][2]*wts3[0][2])))));
+					}
+
+					if(ABD==large2)
+					{
+						wts3[1][0]=(wts3[1][0]/Math.sqrt((wts3[1][0]*wts3[1][0])+(wts3[1][1]*wts3[1][1])+(wts3[1][2]*wts3[1][2])))+(alpha*(A-(wts3[1][0]/Math.sqrt((wts3[1][0]*wts3[1][0])+(wts3[1][1]*wts3[1][1])+(wts3[1][2]*wts3[1][2])))));
+
+						wts3[1][1]=(wts3[1][1]/Math.sqrt((wts3[1][0]*wts3[1][0])+(wts3[1][1]*wts3[1][1])+(wts3[1][2]*wts3[1][2])))+(alpha*(B-(wts3[1][1]/Math.sqrt((wts3[1][0]*wts3[1][0])+(wts3[1][1]*wts3[1][1])+(wts3[1][2]*wts3[1][2])))));
+
+						wts3[1][2]=(wts3[1][2]/Math.sqrt((wts3[1][0]*wts3[1][0])+(wts3[1][1]*wts3[1][1])+(wts3[1][2]*wts3[1][2])))+(alpha*(D-(wts3[1][2]/Math.sqrt((wts3[1][0]*wts3[1][0])+(wts3[1][1]*wts3[1][1])+(wts3[1][2]*wts3[1][2])))));
+					}
+
+					if(ACD==large2)
+					{
+						wts3[2][0]=(wts3[2][0]/Math.sqrt((wts3[2][0]*wts3[2][0])+(wts3[2][1]*wts3[2][1])+(wts3[2][2]*wts3[2][2])))+(alpha*(A-(wts3[2][0]/Math.sqrt((wts3[2][0]*wts3[2][0])+(wts3[2][1]*wts3[2][1])+(wts3[2][2]*wts3[2][2])))));
+
+						wts3[2][1]=(wts3[2][1]/Math.sqrt((wts3[2][0]*wts3[2][0])+(wts3[2][1]*wts3[2][1])+(wts3[2][2]*wts3[2][2])))+(alpha*(C-(wts3[2][1]/Math.sqrt((wts3[2][0]*wts3[2][0])+(wts3[2][1]*wts3[2][1])+(wts3[2][2]*wts3[2][2])))));
+
+						wts3[2][2]=(wts3[2][2]/Math.sqrt((wts3[2][0]*wts3[2][0])+(wts3[2][1]*wts3[2][1])+(wts3[2][2]*wts3[2][2])))+(alpha*(D-(wts3[2][2]/Math.sqrt((wts3[2][0]*wts3[2][0])+(wts3[2][1]*wts3[2][1])+(wts3[2][2]*wts3[2][2])))));
+					}
+
+					if(BCD==large2)
+					{
+						wts3[3][0]=(wts3[3][0]/Math.sqrt((wts3[3][0]*wts3[3][0])+(wts3[3][1]*wts3[3][1])+(wts3[3][2]*wts3[3][2])))+(alpha*(B-(wts3[3][0]/Math.sqrt((wts3[3][0]*wts3[3][0])+(wts3[3][1]*wts3[3][1])+(wts3[3][2]*wts3[3][2])))));
+
+						wts3[3][1]=(wts3[3][1]/Math.sqrt((wts3[3][0]*wts3[3][0])+(wts3[3][1]*wts3[3][1])+(wts3[3][2]*wts3[3][2])))+(alpha*(C-(wts3[3][1]/Math.sqrt((wts3[3][0]*wts3[3][0])+(wts3[3][1]*wts3[3][1])+(wts3[3][2]*wts3[3][2])))));
+
+						wts3[3][1]=(wts3[3][1]/Math.sqrt((wts3[3][0]*wts3[3][0])+(wts3[3][1]*wts3[3][1])+(wts3[3][2]*wts3[3][2])))+(alpha*(B-(wts3[3][1]/Math.sqrt((wts3[3][0]*wts3[3][0])+(wts3[3][1]*wts3[3][1])+(wts3[3][2]*wts3[3][2])))));
+					}
+
+
+					//SETTING THE FOUR INPUT NODE OF THE FIRST HIDDEN LAYER
+
+					double ABCD=((double)inputs[0]*wts4[0])+((double)inputs[1]*wts4[1])+((double)inputs[2]*wts4[2])+((double)inputs[3]*wts4[3]);
+
+					//FIRING THE NEURONS ACCORDING TO THE TRESHOLDS
+
+					if(A<treshold[0])
+						A=0.0;
+					if(B<treshold[1])
+						B=0.0;
+					if(C<treshold[2])
+						C=0.0;
+					if(D<treshold[3])
+						D=0.0;
+					if(AB<treshold[4])
+						AB=0.0;
+					if(AC<treshold[5])
+						AC=0.0;
+					if(AD<treshold[6])
+						AD=0.0;
+					if(BC<treshold[7])
+						BC=0.0;
+					if(BD<treshold[8])
+						BD=0.0;
+					if(CD<treshold[9])
+						CD=0.0;
+					if(ABC<treshold[10])
+						ABC=0.0;
+					if(ABD<treshold[11])
+						ABD=0.0;
+					if(ACD<treshold[12])
+						ACD=0.0;
+					if(BCD<treshold[13])
+						BCD=0.0;
+					if(ABCD<treshold[14])
+						ABCD=0.0;
+
+					//SETTING THE FOUR INPUT NEURON OF THE SECOND HIDDEN LAYER WHOSE INPUTS ARE A,B,C,AND D
+
+					double P=(A*wts5[0])+(B*wts5[1])+(C*wts5[2])+(D*wts5[3]);
+			
+					//SETTING THE SIX INPUT NEURON OF THE SECOND HIDDEN LAYER WHOSE INPUTS ARE AB,AC,AD,BC,BD,AND CD
+
+
+					double Q=(AB*wts6[0])+(AB*wts6[1])+(AC*wts6[2])+(BC*wts6[3])+(BD*wts6[4])+(CD*wts6[5]);
+
+					//SETTING THE FOUR INPUT NEURON OF THE SECOND HIDDEN LAYER WHOSE INPUTS ARE ABC,ABD,ACD AND BCD
+					double R=(ABC*wts7[0])+(ABD*wts7[1])+(ACD*wts7[2])+(BCD*wts7[3]);
+
+					//FINDING THE WINNER AMONG P,Q AND R
+
+					double large3=Math.max(P,(Math.max(Q,R)));
+				
+					//UPDATING THE WINNER NODE(S)
+
+					if(large3==P)
+					{
+						wts5[0]=(wts5[0]/Math.sqrt((wts5[0]*wts5[0])+(wts5[1]*wts5[1])+(wts5[2]*wts5[2])+(wts5[3]*wts5[3])))+(alpha*(A-(wts5[0]/Math.sqrt((wts5[0]*wts5[0])+(wts5[1]*wts5[1])+(wts5[2]*wts5[2])+(wts5[3]*wts5[3])))));
+
+						wts5[1]=(wts5[1]/Math.sqrt((wts5[0]*wts5[0])+(wts5[1]*wts5[1])+(wts5[2]*wts5[2])+(wts5[3]*wts5[3])))+(alpha*(B-(wts5[1]/Math.sqrt((wts5[0]*wts5[0])+(wts5[1]*wts5[1])+(wts5[2]*wts5[2])+(wts5[3]*wts5[3])))));
+
+						wts5[2]=(wts5[2]/Math.sqrt((wts5[0]*wts5[0])+(wts5[1]*wts5[1])+(wts5[2]*wts5[2])+(wts5[3]*wts5[3])))+(alpha*(C-(wts5[2]/Math.sqrt((wts5[0]*wts5[0])+(wts5[1]*wts5[1])+(wts5[2]*wts5[2])+(wts5[3]*wts5[3])))));
+
+						wts5[3]=(wts5[3]/Math.sqrt((wts5[0]*wts5[0])+(wts5[1]*wts5[1])+(wts5[2]*wts5[2])+(wts5[3]*wts5[3])))+(alpha*(D-(wts5[3]/Math.sqrt((wts5[0]*wts5[0])+(wts5[1]*wts5[1])+(wts5[2]*wts5[2])+(wts5[3]*wts5[3])))));
+					}
+				
+					if(large3==Q)
+					{
+						wts6[0]=(wts6[0]/Math.sqrt((wts6[0]*wts6[0])+(wts6[1]*wts6[1])+(wts6[2]*wts6[2])+(wts6[3]*wts6[3])+(wts6[4]*wts6[4])+(wts6[5]*wts6[5])))+(alpha*(AB-(wts6[0]/Math.sqrt((wts6[0]*wts6[0])+(wts6[1]*wts6[1])+(wts6[2]*wts6[2])+(wts6[3]*wts6[3])+(wts6[4]*wts6[4])+(wts6[5]*wts6[5])))));
+
+						wts6[1]=(wts6[1]/Math.sqrt((wts6[0]*wts6[0])+(wts6[1]*wts6[1])+(wts6[2]*wts6[2])+(wts6[3]*wts6[3])+(wts6[4]*wts6[4])+(wts6[5]*wts6[5])))+(alpha*(AC-(wts6[1]/Math.sqrt((wts6[0]*wts6[0])+(wts6[1]*wts6[1])+(wts6[2]*wts6[2])+(wts6[3]*wts6[3])+(wts6[4]*wts6[4])+(wts6[5]*wts6[5])))));
+
+						wts6[2]=(wts6[0]/Math.sqrt((wts6[0]*wts6[0])+(wts6[1]*wts6[1])+(wts6[2]*wts6[2])+(wts6[3]*wts6[3])+(wts6[4]*wts6[4])+(wts6[5]*wts6[5])))+(alpha*(AD-(wts6[2]/Math.sqrt((wts6[0]*wts6[0])+(wts6[1]*wts6[1])+(wts6[2]*wts6[2])+(wts6[3]*wts6[3])+(wts6[4]*wts6[4])+(wts6[5]*wts6[5])))));
+
+						wts6[3]=(wts6[0]/Math.sqrt((wts6[0]*wts6[0])+(wts6[1]*wts6[1])+(wts6[2]*wts6[2])+(wts6[3]*wts6[3])+(wts6[4]*wts6[4])+(wts6[5]*wts6[5])))+(alpha*(BC-(wts6[3]/Math.sqrt((wts6[0]*wts6[0])+(wts6[1]*wts6[1])+(wts6[2]*wts6[2])+(wts6[3]*wts6[3])+(wts6[4]*wts6[4])+(wts6[5]*wts6[5])))));
+
+						wts6[4]=(wts6[0]/Math.sqrt((wts6[0]*wts6[0])+(wts6[1]*wts6[1])+(wts6[2]*wts6[2])+(wts6[3]*wts6[3])+(wts6[4]*wts6[4])+(wts6[5]*wts6[5])))+(alpha*(BD-(wts6[4]/Math.sqrt((wts6[0]*wts6[0])+(wts6[1]*wts6[1])+(wts6[2]*wts6[2])+(wts6[3]*wts6[3])+(wts6[4]*wts6[4])+(wts6[5]*wts6[5])))));
+
+						wts6[5]=(wts6[0]/Math.sqrt((wts6[0]*wts6[0])+(wts6[1]*wts6[1])+(wts6[2]*wts6[2])+(wts6[3]*wts6[3])+(wts6[4]*wts6[4])+(wts6[5]*wts6[5])))+(alpha*(CD-(wts6[5]/Math.sqrt((wts6[0]*wts6[0])+(wts6[1]*wts6[1])+(wts6[2]*wts6[2])+(wts6[3]*wts6[3])+(wts6[4]*wts6[4])+(wts6[5]*wts6[5])))));
+					}
+			
+					if(large3==R)
+					{
+						wts7[0]=(wts7[0]/Math.sqrt((wts7[0]*wts7[0])+(wts7[1]*wts7[1])+(wts7[2]*wts7[2])+(wts7[3]*wts7[3])))+(alpha*(ABC-(wts7[0]/Math.sqrt((wts7[0]*wts7[0])+(wts7[1]*wts7[1])+(wts7[2]*wts7[2])+(wts7[3]*wts7[3])))));
+
+						wts7[1]=(wts7[1]/Math.sqrt((wts7[0]*wts7[0])+(wts7[1]*wts7[1])+(wts7[2]*wts7[2])+(wts7[3]*wts7[3])))+(alpha*(ABD-(wts7[1]/Math.sqrt((wts7[0]*wts7[0])+(wts7[1]*wts7[1])+(wts7[2]*wts7[2])+(wts7[3]*wts7[3])))));
+
+						wts7[2]=(wts7[2]/Math.sqrt((wts7[0]*wts7[0])+(wts7[1]*wts7[1])+(wts7[2]*wts7[2])+(wts7[3]*wts7[3])))+(alpha*(ACD-(wts7[2]/Math.sqrt((wts7[0]*wts7[0])+(wts7[1]*wts7[1])+(wts7[2]*wts7[2])+(wts7[3]*wts7[3])))));
+			
+						wts7[3]=(wts7[3]/Math.sqrt((wts7[0]*wts7[0])+(wts7[1]*wts7[1])+(wts7[2]*wts7[2])+(wts7[3]*wts7[3])))+(alpha*(BCD-(wts7[3]/Math.sqrt((wts7[0]*wts7[0])+(wts7[1]*wts7[1])+(wts7[2]*wts7[2])+(wts7[3]*wts7[3])))));
+
+					}
+				
+					//FIRING THE NEURONS ACCORDING TO THE TRESHOLDS
+			
+					if(P<treshold[15])
+						P=0.0;
+					if(Q<treshold[16])
+						Q=0.0;
+					if(R<treshold[17])
+						R=0.0;
+
+					//SETTING THE TWO INPUT NEURON OF THE THIRD HIDDEN LAYER WHOSE INPUTS ARE P AND Q
+
+					double S=(P*wts8[0])+(Q*wts8[1]);
+
+					//SETTING THE FOUR INPUT NEURON OF THE SECOND HIDDEN LAYER WHOSE INPUTS ARE R AND ABCD
+
+					double T=(R*wts9[0])+(ABCD*wts9[1]);
+
+					//FINDING THE WINNER
+
+					double large4=Math.max(S,T);
+
+					//UPDATING THE WINNER NODE(S)
+
+					if(large4==S)
+					{
+						wts8[0]=(wts8[0]/Math.sqrt((wts8[0]*wts8[0])+(wts8[1]*wts8[1])))+(alpha*(P-(wts8[0]/Math.sqrt((wts8[0]*wts8[0])+(wts8[1]*wts8[1])))));
+
+						wts8[1]=(wts8[1]/Math.sqrt((wts8[0]*wts8[0])+(wts8[1]*wts8[1])))+(alpha*(Q-(wts8[1]/Math.sqrt((wts8[0]*wts8[0])+(wts8[1]*wts8[1])))));
+					}
+
+					if(large4==T)
+					{
+						wts9[0]=(wts9[0]/Math.sqrt((wts9[0]*wts9[0])+(wts9[1]*wts9[1])))+(alpha*(R-(wts9[0]/Math.sqrt((wts9[0]*wts9[0])+(wts9[1]*wts9[1])))));
+
+						wts9[1]=(wts9[1]/Math.sqrt((wts9[0]*wts9[0])+(wts9[1]*wts9[1])))+(alpha*(ABCD-(wts9[1]/Math.sqrt((wts9[0]*wts9[0])+(wts9[1]*wts9[1])))));		
+				}
+				
+					//FIRING THE NEURONS ACCORDING TO THE TRESHOLDS
+
+					if(S<treshold[18])
+						S=0.0;
+					if(T<treshold[19])
+						T=0.0;
+
+					//SETTING THE TWO INPUT NEURON OF THE OUTPUT NEURON WHOSE INPUTS ARE S AND T
+
+					double X=(S*wts10[0])+(T*wts10[1]);
+
+					//UPDATING THE NODES
+
+					wts10[0]=(wts10[0]/Math.sqrt((wts10[0]*wts10[0])+(wts10[1]*wts10[1])))+(alpha*(S-(wts10[0]/Math.sqrt((wts10[0]*wts10[0])+(wts10[1]*wts10[1])))));
+
+					wts10[1]=(wts10[1]/Math.sqrt((wts10[0]*wts10[0])+(wts10[1]*wts10[1])))+(alpha*(T-(wts10[1]/Math.sqrt((wts10[0]*wts10[0])+(wts10[1]*wts10[1])))));
+					if(X<treshold[20])	
+						X=0.0;
+					else
+						X=1.0;
+
+					//PRINT ONLY IF THE OUTPUT NODE FIRES, THAT IS THE WARNING KEEP A COUNT
+
+				
+					//if(X==1.0)
+					//{
+					//	System.out.println("final "+FLAG+"th X = "+X);
+					//	count++;
+					//}
+
+					FLAG++;
+					if((FLAG%100)==0)
+					alpha=(alpha/2);
+				}*/
+				
+				//pasu's waork
+				
+				
+				try{
+					 
+					   File f = new File(Environment.getExternalStorageDirectory()+"/wts1.txt");
+					 
+					   FileInputStream fileIS = new FileInputStream(f);
+					 
+					   BufferedReader buf = new BufferedReader(new InputStreamReader(fileIS));
+					 
+					   String readString = new String();
+					 
+					   //just reading each line and pass it on the debugger
+					 int i=0;
+					   while((readString = buf.readLine())!= null)
+					   {
+					 	      wts1[i]=Double.parseDouble(readString);
+					 	      i++;
+					   }
+					 
+					} catch (FileNotFoundException e) {
+					 
+					   e.printStackTrace();
+					 
+					} catch (IOException e){
+					 
+					   e.printStackTrace();
+					 
+					}
+				
+				try{
+					 
+					   File f = new File(Environment.getExternalStorageDirectory()+"/wts2.txt");
+					 
+					   FileInputStream fileIS = new FileInputStream(f);
+					 
+					   BufferedReader buf = new BufferedReader(new InputStreamReader(fileIS));
+					 
+					   String readString = new String();
+					 
+					   //just reading each line and pass it on the debugger
+					 int i=0,j;
+					 for(i=0;i<=5;i++)
+					 {
+						 for(j=0;j<2;j++)
+						   {
+							   readString = buf.readLine();
+						         wts2[i][j]=Double.parseDouble(readString);
+						   }
+					   }
+					 
+					} catch (FileNotFoundException e) {
+					 
+					   e.printStackTrace();
+					 
+					} catch (IOException e){
+					 
+					   e.printStackTrace();
+					 
+					}
+				
+				
+				try{
+					 
+					   File f = new File(Environment.getExternalStorageDirectory()+"/wts3.txt");
+					 
+					   FileInputStream fileIS = new FileInputStream(f);
+					 
+					   BufferedReader buf = new BufferedReader(new InputStreamReader(fileIS));
+					 
+					   String readString = new String();
+					 
+					   //just reading each line and pass it on the debugger
+					 int i=0;
+					 for(i=0;i<=5;i++)
+					 {
+						 for(int j=0;j<2;j++)
+						 {
+							  readString = buf.readLine();
+					 	      wts3[i][j]=Double.parseDouble(readString);
+						 }
+					   }
+					 
+					} catch (FileNotFoundException e) {
+					 
+					   e.printStackTrace();
+					 
+					} catch (IOException e){
+					 
+					   e.printStackTrace();
+					 
+					}
+				
+				try{
+					 
+					   File f = new File(Environment.getExternalStorageDirectory()+"/wts4.txt");
+					 
+					   FileInputStream fileIS = new FileInputStream(f);
+					 
+					   BufferedReader buf = new BufferedReader(new InputStreamReader(fileIS));
+					 
+					   String readString = new String();
+					 
+					   //just reading each line and pass it on the debugger
+					 int i=0;
+					   while((readString = buf.readLine())!= null)
+					   {
+					 	      wts4[i]=Double.parseDouble(readString);
+					 	      i++;
+					   }
+					 
+					} catch (FileNotFoundException e) {
+					 
+					   e.printStackTrace();
+					 
+					} catch (IOException e){
+					 
+					   e.printStackTrace();
+					 
+					}
+				
+				try{
+					 
+					   File f = new File(Environment.getExternalStorageDirectory()+"/wts5.txt");
+					 
+					   FileInputStream fileIS = new FileInputStream(f);
+					 
+					   BufferedReader buf = new BufferedReader(new InputStreamReader(fileIS));
+					 
+					   String readString = new String();
+					 
+					   //just reading each line and pass it on the debugger
+					 int i=0;
+					   while((readString = buf.readLine())!= null)
+					   {
+					 	      wts5[i]=Double.parseDouble(readString);
+					 	      i++;
+					   }
+					 
+					} catch (FileNotFoundException e) {
+					 
+					   e.printStackTrace();
+					 
+					} catch (IOException e){
+					 
+					   e.printStackTrace();
+					 
+					}
+				
+				try{
+					 
+					   File f = new File(Environment.getExternalStorageDirectory()+"/wts6.txt");
+					 
+					   FileInputStream fileIS = new FileInputStream(f);
+					 
+					   BufferedReader buf = new BufferedReader(new InputStreamReader(fileIS));
+					 
+					   String readString = new String();
+					 
+					   //just reading each line and pass it on the debugger
+					 int i=0;
+					   while((readString = buf.readLine())!= null)
+					   {
+					 	      wts6[i]=Double.parseDouble(readString);
+					 	      i++;
+					   }
+					 
+					} catch (FileNotFoundException e) {
+					 
+					   e.printStackTrace();
+					 
+					} catch (IOException e){
+					 
+					   e.printStackTrace();
+					 
+					}
+				
+				try{
+					 
+					   File f = new File(Environment.getExternalStorageDirectory()+"/wts7.txt");
+					 
+					   FileInputStream fileIS = new FileInputStream(f);
+					 
+					   BufferedReader buf = new BufferedReader(new InputStreamReader(fileIS));
+					 
+					   String readString = new String();
+					 
+					   //just reading each line and pass it on the debugger
+					 int i=0;
+					   while((readString = buf.readLine())!= null)
+					   {
+					 	      wts7[i]=Double.parseDouble(readString);
+					 	      i++;
+					   }
+					 
+					} catch (FileNotFoundException e) {
+					 
+					   e.printStackTrace();
+					 
+					} catch (IOException e){
+					 
+					   e.printStackTrace();
+					 
+					}
+				
+				
+				try{
+					 
+					   File f = new File(Environment.getExternalStorageDirectory()+"/wts8.txt");
+					 
+					   FileInputStream fileIS = new FileInputStream(f);
+					 
+					   BufferedReader buf = new BufferedReader(new InputStreamReader(fileIS));
+					 
+					   String readString = new String();
+					 
+					   //just reading each line and pass it on the debugger
+					 int i=0;
+					   while((readString = buf.readLine())!= null)
+					   {
+					 	      wts8 [i]=Double.parseDouble(readString);
+					 	      i++;
+					   }
+					 
+					} catch (FileNotFoundException e) {
+					 
+					   e.printStackTrace();
+					 
+					} catch (IOException e){
+					 
+					   e.printStackTrace();
+					 
+					}
+				
+				try{
+					 
+					   File f = new File(Environment.getExternalStorageDirectory()+"/wts9.txt");
+					 
+					   FileInputStream fileIS = new FileInputStream(f);
+					 
+					   BufferedReader buf = new BufferedReader(new InputStreamReader(fileIS));
+					 
+					   String readString = new String();
+					 
+					   //just reading each line and pass it on the debugger
+					 int i=0;
+					   while((readString = buf.readLine())!= null)
+					   {
+					 	      wts9[i]=Double.parseDouble(readString);
+					 	      i++;
+					   }
+					 
+					} catch (FileNotFoundException e) {
+					 
+					   e.printStackTrace();
+					 
+					} catch (IOException e){
+					 
+					   e.printStackTrace();
+					 
+					}
+					
+				try{
+					 
+					   File f = new File(Environment.getExternalStorageDirectory()+"/wts10.txt");
+					 
+					   FileInputStream fileIS = new FileInputStream(f);
+					 
+					   BufferedReader buf = new BufferedReader(new InputStreamReader(fileIS));
+					 
+					   String readString = new String();
+					 
+					   //just reading each line and pass it on the debugger
+					 int i=0;
+					   while((readString = buf.readLine())!= null)
+					   {
+					 	      wts10[i]=Double.parseDouble(readString);
+					 	      i++;
+					   }
+					 
+					} catch (FileNotFoundException e) {
+					 
+					   e.printStackTrace();
+					 
+					} catch (IOException e){
+					 
+					   e.printStackTrace();
+					 
+					}
+				try{
+					 
+					   File f = new File(Environment.getExternalStorageDirectory()+"/alpha.txt");
+					 
+					   FileInputStream fileIS = new FileInputStream(f);
+					 
+					   BufferedReader buf = new BufferedReader(new InputStreamReader(fileIS));
+					 
+					   String readString = new String();
+					 
+					   //just reading each line and pass it on the debugger
+					 int i=0;
+					   while((readString = buf.readLine())!= null)
+					   {
+					 	      alpha=Double.parseDouble(readString);
+					 	      i++;
+					   }
+					 
+					} catch (FileNotFoundException e) {
+					 
+					   e.printStackTrace();
+					 
+					} catch (IOException e){
+					 
+					   e.printStackTrace();
+					 
+					}
+				try{
+					 
+					   File f = new File(Environment.getExternalStorageDirectory()+"/FLAG.txt");
+					 
+					   FileInputStream fileIS = new FileInputStream(f);
+					 
+					   BufferedReader buf = new BufferedReader(new InputStreamReader(fileIS));
+					 
+					   String readString = new String();
+					 
+					   //just reading each line and pass it on the debugger
+					 int i=0;
+					   while((readString = buf.readLine())!= null)
+					   {
+					 	      FLAG=Integer.parseInt(readString);
+					 	      i++;
+					   }
+					 
+					} catch (FileNotFoundException e) {
+					 
+					   e.printStackTrace();
+					 
+					} catch (IOException e){
+					 
+					   e.printStackTrace();
+					 
+					}
+				
+
+				
+				inputs[0]=d1;
+				inputs[1]=d2;
+				inputs[2]=d3;
+				inputs[3]=d4;
+				
+				
+				double A=(double)inputs[0]*wts1[0];
+				double B=(double)inputs[1]*wts1[1];
+				double C=(double)inputs[2]*wts1[2];
+				double D=(double)inputs[3]*wts1[3];
+			
+				// FINDING THE WINNER
+
+				double large = Math.max(A,(Math.max(B,(Math.max(C,D)))));
+
+				// UPDATING THE WINNER NODE(S)
+
+				if(A==large)
+				{
+					wts1[0]=1;
+				}
+				if(B==large)
+				{
+					wts1[1]=1;
+				}
+				if(C==large)
+				{
+					wts1[2]=1;
+				}
+				if(D==large)
+				{
+					wts1[3]=1;
+				}
+
+				//SETTING THE TWO INPUT NODES OF THE FIRST INPUT LAYER, 6 OF THEM
+
+				double AB=((double)inputs[0]*wts2[0][0])+((double)inputs[1]*wts2[0][1]);
+				double AC=((double)inputs[0]*wts2[1][0])+((double)inputs[2]*wts2[1][1]);
+				double AD=((double)inputs[0]*wts2[2][0])+((double)inputs[3]*wts2[2][1]);
+				double BC=((double)inputs[1]*wts2[3][0])+((double)inputs[2]*wts2[3][1]);
+				double BD=((double)inputs[1]*wts2[4][0])+((double)inputs[3]*wts2[4][1]);
+				double CD=((double)inputs[2]*wts2[5][0])+((double)inputs[3]*wts2[5][1]);
+
+				// FINDING THE WINNER
+
+				double large1 = Math.max(AB,(Math.max(AC,(Math.max(AD,(Math.max(BC,(Math.max(BD,CD)))))))));
+
+				//UPDATING THE WINNER NODE(S)
+
+				/* UPDATE LIKE
+					NEW WEIGHT = (OLD WEIGHT/NORMALIZED OLD INPUT VECTOR) + (LEARNING CONSTANT * (INPUT - (OLD WEIGHT/NORMALIZED OLD INPUT VECTOR)))
+
+					IF INPUT VECTOR = [A B],
+					THEN NORMALIZED INPUT VECTOR = SQURE ROOT((A*A)+(B*B))*/
+
+				if(AB==large1)
+				{
+					wts2[0][0]=(wts2[0][0]/Math.sqrt((wts2[0][0]*wts2[0][0])+(wts2[0][1]*wts2[0][1])))+(alpha*(A-(wts2[0][0]/Math.sqrt((wts2[0][0]*wts2[0][0])+(wts2[0][1]*wts2[0][1])))));
+
+					wts2[0][1]=(wts2[0][1]/Math.sqrt((wts2[0][0]*wts2[0][0])+(wts2[0][1]*wts2[0][1])))+(alpha*(B-(wts2[0][1]/Math.sqrt((wts2[0][0]*wts2[0][0])+(wts2[0][1]*wts2[0][1])))));
+				}
+
+				if(AC==large1)
+				{
+					wts2[1][0]=(wts2[1][0]/Math.sqrt((wts2[1][0]*wts2[1][0])+(wts2[1][1]*wts2[1][1])))+(alpha*(A-(wts2[1][0]/Math.sqrt((wts2[1][0]*wts2[1][0])+(wts2[1][1]*wts2[1][1])))));
+
+					wts2[1][1]=(wts2[1][1]/Math.sqrt((wts2[1][0]*wts2[1][0])+(wts2[1][1]*wts2[1][1])))+(alpha*(C-(wts2[1][1]/Math.sqrt((wts2[1][0]*wts2[1][0])+(wts2[1][1]*wts2[1][1])))));
+				}
+
+				if(AD==large1)
+				{
+					wts2[2][0]=(wts2[2][0]/Math.sqrt((wts2[2][0]*wts2[2][0])+(wts2[2][1]*wts2[2][1])))+(alpha*(A-(wts2[2][0]/Math.sqrt((wts2[2][0]*wts2[2][0])+(wts2[2][1]*wts2[2][1])))));
+
+					wts2[2][1]=(wts2[2][1]/Math.sqrt((wts2[2][0]*wts2[2][0])+(wts2[2][1]*wts2[2][1])))+(alpha*(D-(wts2[2][1]/Math.sqrt((wts2[2][0]*wts2[2][0])+(wts2[2][1]*wts2[2][1])))));
+				}
+
+				if(BC==large1)
+				{
+					wts2[3][0]=(wts2[3][0]/Math.sqrt((wts2[3][0]*wts2[3][0])+(wts2[3][1]*wts2[3][1])))+(alpha*(B-(wts2[3][0]/Math.sqrt((wts2[3][0]*wts2[3][0])+(wts2[3][1]*wts2[3][1])))));
+
+					wts2[3][1]=(wts2[3][1]/Math.sqrt((wts2[3][0]*wts2[0][0])+(wts2[3][1]*wts2[3][1])))+(alpha*(C-(wts2[3][1]/Math.sqrt((wts2[3][0]*wts2[3][0])+(wts2[3][1]*wts2[3][1])))));
+				}
+
+				if(BD==large1)
+				{
+					wts2[4][0]=(wts2[4][0]/Math.sqrt((wts2[4][0]*wts2[4][0])+(wts2[4][1]*wts2[4][1])))+(alpha*(B-(wts2[4][0]/Math.sqrt((wts2[4][0]*wts2[4][0])+(wts2[4][1]*wts2[4][1])))));
+
+					wts2[4][1]=(wts2[4][1]/Math.sqrt((wts2[4][0]*wts2[4][0])+(wts2[4][1]*wts2[4][1])))+(alpha*(D-(wts2[4][1]/Math.sqrt((wts2[4][0]*wts2[4][0])+(wts2[4][1]*wts2[4][1])))));
+				}
+
+				if(CD==large1)
+				{
+					wts2[5][0]=(wts2[5][0]/Math.sqrt((wts2[5][0]*wts2[5][0])+(wts2[5][1]*wts2[5][1])))+(alpha*(C-(wts2[5][0]/Math.sqrt((wts2[5][0]*wts2[5][0])+(wts2[5][1]*wts2[5][1])))));
+
+					wts2[5][1]=(wts2[5][1]/Math.sqrt((wts2[5][0]*wts2[5][0])+(wts2[5][1]*wts2[5][1])))+(alpha*(D-(wts2[5][1]/Math.sqrt((wts2[5][0]*wts2[5][0])+(wts2[5][1]*wts2[5][1])))));
+				}
+
+				//SETTING THE THREE INPUT NODES OF THE FIRST HIDDEN LAYER
+
+				double ABC=((double)inputs[0]*wts3[0][0])+((double)inputs[1]*wts3[0][1])+((double)inputs[2]*wts3[0][2]);
+				double ABD=((double)inputs[0]*wts3[1][0])+((double)inputs[1]*wts3[1][1])+((double)inputs[3]*wts3[1][2]);
+				double ACD=((double)inputs[0]*wts3[2][0])+((double)inputs[2]*wts3[2][1])+((double)inputs[3]*wts3[2][2]);
+				double BCD=((double)inputs[1]*wts3[3][0])+((double)inputs[2]*wts3[3][1])+((double)inputs[3]*wts3[3][2]);
+
+				//FINDING THE WINNER
+
+				double large2=Math.max(ABC,(Math.max(ABD,(Math.max(ACD,BCD)))));
+
+				//UPDATING THE WINNER NODE(S)
+
+				if(ABC==large2)
+				{
+					wts3[0][0]=(wts3[0][0]/Math.sqrt((wts3[0][0]*wts3[0][0])+(wts3[0][1]*wts3[0][1])+(wts3[0][2]*wts3[0][2])))+(alpha*(A-(wts3[0][0]/Math.sqrt((wts3[0][0]*wts3[0][0])+(wts3[0][1]*wts3[0][1])+(wts3[0][2]*wts3[0][2])))));
+
+					wts3[0][1]=(wts3[0][1]/Math.sqrt((wts3[0][0]*wts3[0][0])+(wts3[0][1]*wts3[0][1])+(wts3[0][2]*wts3[0][2])))+(alpha*(B-(wts3[0][1]/Math.sqrt((wts3[0][0]*wts3[0][0])+(wts3[0][1]*wts3[0][1])+(wts3[0][2]*wts3[0][2])))));
+
+					wts3[0][2]=(wts3[0][2]/Math.sqrt((wts3[0][0]*wts3[0][0])+(wts3[0][1]*wts3[0][1])+(wts3[0][2]*wts3[0][2])))+(alpha*(C-(wts3[0][2]/Math.sqrt((wts3[0][0]*wts3[0][0])+(wts3[0][1]*wts3[0][1])+(wts3[0][2]*wts3[0][2])))));
+				}
+
+				if(ABD==large2)
+				{
+					wts3[1][0]=(wts3[1][0]/Math.sqrt((wts3[1][0]*wts3[1][0])+(wts3[1][1]*wts3[1][1])+(wts3[1][2]*wts3[1][2])))+(alpha*(A-(wts3[1][0]/Math.sqrt((wts3[1][0]*wts3[1][0])+(wts3[1][1]*wts3[1][1])+(wts3[1][2]*wts3[1][2])))));
+
+					wts3[1][1]=(wts3[1][1]/Math.sqrt((wts3[1][0]*wts3[1][0])+(wts3[1][1]*wts3[1][1])+(wts3[1][2]*wts3[1][2])))+(alpha*(B-(wts3[1][1]/Math.sqrt((wts3[1][0]*wts3[1][0])+(wts3[1][1]*wts3[1][1])+(wts3[1][2]*wts3[1][2])))));
+
+					wts3[1][2]=(wts3[1][2]/Math.sqrt((wts3[1][0]*wts3[1][0])+(wts3[1][1]*wts3[1][1])+(wts3[1][2]*wts3[1][2])))+(alpha*(D-(wts3[1][2]/Math.sqrt((wts3[1][0]*wts3[1][0])+(wts3[1][1]*wts3[1][1])+(wts3[1][2]*wts3[1][2])))));
+				}
+
+				if(ACD==large2)
+				{
+					wts3[2][0]=(wts3[2][0]/Math.sqrt((wts3[2][0]*wts3[2][0])+(wts3[2][1]*wts3[2][1])+(wts3[2][2]*wts3[2][2])))+(alpha*(A-(wts3[2][0]/Math.sqrt((wts3[2][0]*wts3[2][0])+(wts3[2][1]*wts3[2][1])+(wts3[2][2]*wts3[2][2])))));
+
+					wts3[2][1]=(wts3[2][1]/Math.sqrt((wts3[2][0]*wts3[2][0])+(wts3[2][1]*wts3[2][1])+(wts3[2][2]*wts3[2][2])))+(alpha*(C-(wts3[2][1]/Math.sqrt((wts3[2][0]*wts3[2][0])+(wts3[2][1]*wts3[2][1])+(wts3[2][2]*wts3[2][2])))));
+
+					wts3[2][2]=(wts3[2][2]/Math.sqrt((wts3[2][0]*wts3[2][0])+(wts3[2][1]*wts3[2][1])+(wts3[2][2]*wts3[2][2])))+(alpha*(D-(wts3[2][2]/Math.sqrt((wts3[2][0]*wts3[2][0])+(wts3[2][1]*wts3[2][1])+(wts3[2][2]*wts3[2][2])))));
+				}
+
+				if(BCD==large2)
+				{
+					wts3[3][0]=(wts3[3][0]/Math.sqrt((wts3[3][0]*wts3[3][0])+(wts3[3][1]*wts3[3][1])+(wts3[3][2]*wts3[3][2])))+(alpha*(B-(wts3[3][0]/Math.sqrt((wts3[3][0]*wts3[3][0])+(wts3[3][1]*wts3[3][1])+(wts3[3][2]*wts3[3][2])))));
+
+					wts3[3][1]=(wts3[3][1]/Math.sqrt((wts3[3][0]*wts3[3][0])+(wts3[3][1]*wts3[3][1])+(wts3[3][2]*wts3[3][2])))+(alpha*(C-(wts3[3][1]/Math.sqrt((wts3[3][0]*wts3[3][0])+(wts3[3][1]*wts3[3][1])+(wts3[3][2]*wts3[3][2])))));
+
+					wts3[3][1]=(wts3[3][1]/Math.sqrt((wts3[3][0]*wts3[3][0])+(wts3[3][1]*wts3[3][1])+(wts3[3][2]*wts3[3][2])))+(alpha*(B-(wts3[3][1]/Math.sqrt((wts3[3][0]*wts3[3][0])+(wts3[3][1]*wts3[3][1])+(wts3[3][2]*wts3[3][2])))));
+				}
+
+
+				//SETTING THE FOUR INPUT NODE OF THE FIRST HIDDEN LAYER
+
+				double ABCD=((double)inputs[0]*wts4[0])+((double)inputs[1]*wts4[1])+((double)inputs[2]*wts4[2])+((double)inputs[3]*wts4[3]);
+
+				//FIRING THE NEURONS ACCORDING TO THE TRESHOLDS
+
+				if(A<treshold[0])
+					A=0.0;
+				if(B<treshold[1])
+					B=0.0;
+				if(C<treshold[2])
+					C=0.0;
+				if(D<treshold[3])
+					D=0.0;
+				if(AB<treshold[4])
+					AB=0.0;
+				if(AC<treshold[5])
+					AC=0.0;
+				if(AD<treshold[6])
+					AD=0.0;
+				if(BC<treshold[7])
+					BC=0.0;
+				if(BD<treshold[8])
+					BD=0.0;
+				if(CD<treshold[9])
+					CD=0.0;
+				if(ABC<treshold[10])
+					ABC=0.0;
+				if(ABD<treshold[11])
+					ABD=0.0;
+				if(ACD<treshold[12])
+					ACD=0.0;
+				if(BCD<treshold[13])
+					BCD=0.0;
+				if(ABCD<treshold[14])
+					ABCD=0.0;
+
+				//SETTING THE FOUR INPUT NEURON OF THE SECOND HIDDEN LAYER WHOSE INPUTS ARE A,B,C,AND D
+
+				double P=(A*wts5[0])+(B*wts5[1])+(C*wts5[2])+(D*wts5[3]);
+
+				//SETTING THE SIX INPUT NEURON OF THE SECOND HIDDEN LAYER WHOSE INPUTS ARE AB,AC,AD,BC,BD,AND CD
+
+
+				double Q=(AB*wts6[0])+(AB*wts6[1])+(AC*wts6[2])+(BC*wts6[3])+(BD*wts6[4])+(CD*wts6[5]);
+
+				//SETTING THE FOUR INPUT NEURON OF THE SECOND HIDDEN LAYER WHOSE INPUTS ARE ABC,ABD,ACD AND BCD
+				double R=(ABC*wts7[0])+(ABD*wts7[1])+(ACD*wts7[2])+(BCD*wts7[3]);
+
+				//FINDING THE WINNER AMONG P,Q AND R
+
+				double large3=Math.max(P,(Math.max(Q,R)));
+			
+				//UPDATING THE WINNER NODE(S)
+
+				if(large3==P)
+				{
+					wts5[0]=(wts5[0]/Math.sqrt((wts5[0]*wts5[0])+(wts5[1]*wts5[1])+(wts5[2]*wts5[2])+(wts5[3]*wts5[3])))+(alpha*(A-(wts5[0]/Math.sqrt((wts5[0]*wts5[0])+(wts5[1]*wts5[1])+(wts5[2]*wts5[2])+(wts5[3]*wts5[3])))));
+
+					wts5[1]=(wts5[1]/Math.sqrt((wts5[0]*wts5[0])+(wts5[1]*wts5[1])+(wts5[2]*wts5[2])+(wts5[3]*wts5[3])))+(alpha*(B-(wts5[1]/Math.sqrt((wts5[0]*wts5[0])+(wts5[1]*wts5[1])+(wts5[2]*wts5[2])+(wts5[3]*wts5[3])))));
+
+					wts5[2]=(wts5[2]/Math.sqrt((wts5[0]*wts5[0])+(wts5[1]*wts5[1])+(wts5[2]*wts5[2])+(wts5[3]*wts5[3])))+(alpha*(C-(wts5[2]/Math.sqrt((wts5[0]*wts5[0])+(wts5[1]*wts5[1])+(wts5[2]*wts5[2])+(wts5[3]*wts5[3])))));
+
+					wts5[3]=(wts5[3]/Math.sqrt((wts5[0]*wts5[0])+(wts5[1]*wts5[1])+(wts5[2]*wts5[2])+(wts5[3]*wts5[3])))+(alpha*(D-(wts5[3]/Math.sqrt((wts5[0]*wts5[0])+(wts5[1]*wts5[1])+(wts5[2]*wts5[2])+(wts5[3]*wts5[3])))));
+				}
+			
+				if(large3==Q)
+				{
+					wts6[0]=(wts6[0]/Math.sqrt((wts6[0]*wts6[0])+(wts6[1]*wts6[1])+(wts6[2]*wts6[2])+(wts6[3]*wts6[3])+(wts6[4]*wts6[4])+(wts6[5]*wts6[5])))+(alpha*(AB-(wts6[0]/Math.sqrt((wts6[0]*wts6[0])+(wts6[1]*wts6[1])+(wts6[2]*wts6[2])+(wts6[3]*wts6[3])+(wts6[4]*wts6[4])+(wts6[5]*wts6[5])))));
+
+					wts6[1]=(wts6[1]/Math.sqrt((wts6[0]*wts6[0])+(wts6[1]*wts6[1])+(wts6[2]*wts6[2])+(wts6[3]*wts6[3])+(wts6[4]*wts6[4])+(wts6[5]*wts6[5])))+(alpha*(AC-(wts6[1]/Math.sqrt((wts6[0]*wts6[0])+(wts6[1]*wts6[1])+(wts6[2]*wts6[2])+(wts6[3]*wts6[3])+(wts6[4]*wts6[4])+(wts6[5]*wts6[5])))));
+
+					wts6[2]=(wts6[0]/Math.sqrt((wts6[0]*wts6[0])+(wts6[1]*wts6[1])+(wts6[2]*wts6[2])+(wts6[3]*wts6[3])+(wts6[4]*wts6[4])+(wts6[5]*wts6[5])))+(alpha*(AD-(wts6[2]/Math.sqrt((wts6[0]*wts6[0])+(wts6[1]*wts6[1])+(wts6[2]*wts6[2])+(wts6[3]*wts6[3])+(wts6[4]*wts6[4])+(wts6[5]*wts6[5])))));
+
+					wts6[3]=(wts6[0]/Math.sqrt((wts6[0]*wts6[0])+(wts6[1]*wts6[1])+(wts6[2]*wts6[2])+(wts6[3]*wts6[3])+(wts6[4]*wts6[4])+(wts6[5]*wts6[5])))+(alpha*(BC-(wts6[3]/Math.sqrt((wts6[0]*wts6[0])+(wts6[1]*wts6[1])+(wts6[2]*wts6[2])+(wts6[3]*wts6[3])+(wts6[4]*wts6[4])+(wts6[5]*wts6[5])))));
+
+					wts6[4]=(wts6[0]/Math.sqrt((wts6[0]*wts6[0])+(wts6[1]*wts6[1])+(wts6[2]*wts6[2])+(wts6[3]*wts6[3])+(wts6[4]*wts6[4])+(wts6[5]*wts6[5])))+(alpha*(BD-(wts6[4]/Math.sqrt((wts6[0]*wts6[0])+(wts6[1]*wts6[1])+(wts6[2]*wts6[2])+(wts6[3]*wts6[3])+(wts6[4]*wts6[4])+(wts6[5]*wts6[5])))));
+
+					wts6[5]=(wts6[0]/Math.sqrt((wts6[0]*wts6[0])+(wts6[1]*wts6[1])+(wts6[2]*wts6[2])+(wts6[3]*wts6[3])+(wts6[4]*wts6[4])+(wts6[5]*wts6[5])))+(alpha*(CD-(wts6[5]/Math.sqrt((wts6[0]*wts6[0])+(wts6[1]*wts6[1])+(wts6[2]*wts6[2])+(wts6[3]*wts6[3])+(wts6[4]*wts6[4])+(wts6[5]*wts6[5])))));
+				}
+
+				if(large3==R)
+				{
+					wts7[0]=(wts7[0]/Math.sqrt((wts7[0]*wts7[0])+(wts7[1]*wts7[1])+(wts7[2]*wts7[2])+(wts7[3]*wts7[3])))+(alpha*(ABC-(wts7[0]/Math.sqrt((wts7[0]*wts7[0])+(wts7[1]*wts7[1])+(wts7[2]*wts7[2])+(wts7[3]*wts7[3])))));
+
+					wts7[1]=(wts7[1]/Math.sqrt((wts7[0]*wts7[0])+(wts7[1]*wts7[1])+(wts7[2]*wts7[2])+(wts7[3]*wts7[3])))+(alpha*(ABD-(wts7[1]/Math.sqrt((wts7[0]*wts7[0])+(wts7[1]*wts7[1])+(wts7[2]*wts7[2])+(wts7[3]*wts7[3])))));
+
+					wts7[2]=(wts7[2]/Math.sqrt((wts7[0]*wts7[0])+(wts7[1]*wts7[1])+(wts7[2]*wts7[2])+(wts7[3]*wts7[3])))+(alpha*(ACD-(wts7[2]/Math.sqrt((wts7[0]*wts7[0])+(wts7[1]*wts7[1])+(wts7[2]*wts7[2])+(wts7[3]*wts7[3])))));
+
+					wts7[3]=(wts7[3]/Math.sqrt((wts7[0]*wts7[0])+(wts7[1]*wts7[1])+(wts7[2]*wts7[2])+(wts7[3]*wts7[3])))+(alpha*(BCD-(wts7[3]/Math.sqrt((wts7[0]*wts7[0])+(wts7[1]*wts7[1])+(wts7[2]*wts7[2])+(wts7[3]*wts7[3])))));
+
+				}
+			
+				//FIRING THE NEURONS ACCORDING TO THE TRESHOLDS
+
+				if(P<treshold[15])
+					P=0.0;
+				if(Q<treshold[16])
+					Q=0.0;
+				if(R<treshold[17])
+					R=0.0;
+
+				//SETTING THE TWO INPUT NEURON OF THE THIRD HIDDEN LAYER WHOSE INPUTS ARE P AND Q
+
+				double S=(P*wts8[0])+(Q*wts8[1]);
+
+				//SETTING THE FOUR INPUT NEURON OF THE SECOND HIDDEN LAYER WHOSE INPUTS ARE R AND ABCD
+
+				double T=(R*wts9[0])+(ABCD*wts9[1]);
+
+				//FINDING THE WINNER
+
+				double large4=Math.max(S,T);
+
+				//UPDATING THE WINNER NODE(S)
+
+				if(large4==S)
+				{
+					wts8[0]=(wts8[0]/Math.sqrt((wts8[0]*wts8[0])+(wts8[1]*wts8[1])))+(alpha*(P-(wts8[0]/Math.sqrt((wts8[0]*wts8[0])+(wts8[1]*wts8[1])))));
+
+					wts8[1]=(wts8[1]/Math.sqrt((wts8[0]*wts8[0])+(wts8[1]*wts8[1])))+(alpha*(Q-(wts8[1]/Math.sqrt((wts8[0]*wts8[0])+(wts8[1]*wts8[1])))));
+				}
+
+				if(large4==T)
+				{
+					wts9[0]=(wts9[0]/Math.sqrt((wts9[0]*wts9[0])+(wts9[1]*wts9[1])))+(alpha*(R-(wts9[0]/Math.sqrt((wts9[0]*wts9[0])+(wts9[1]*wts9[1])))));
+
+					wts9[1]=(wts9[1]/Math.sqrt((wts9[0]*wts9[0])+(wts9[1]*wts9[1])))+(alpha*(ABCD-(wts9[1]/Math.sqrt((wts9[0]*wts9[0])+(wts9[1]*wts9[1])))));		
+			}
+			
+				//FIRING THE NEURONS ACCORDING TO THE TRESHOLDS
+
+				if(S<treshold[18])
+					S=0.0;
+				if(T<treshold[19])
+					T=0.0;
+
+				//SETTING THE TWO INPUT NEURON OF THE OUTPUT NEURON WHOSE INPUTS ARE S AND T
+
+				double X=(S*wts10[0])+(T*wts10[1]);
+
+				//UPDATING THE NODES
+
+				wts10[0]=(wts10[0]/Math.sqrt((wts10[0]*wts10[0])+(wts10[1]*wts10[1])))+(alpha*(S-(wts10[0]/Math.sqrt((wts10[0]*wts10[0])+(wts10[1]*wts10[1])))));
+
+				wts10[1]=(wts10[1]/Math.sqrt((wts10[0]*wts10[0])+(wts10[1]*wts10[1])))+(alpha*(T-(wts10[1]/Math.sqrt((wts10[0]*wts10[0])+(wts10[1]*wts10[1])))));
+				
+				if(X<treshold[20])	
+					X=0.0;
+				else
+					X=1.0;
+
+				//if(X==1.0)
+				//{
+					//System.out.println("final "+FLAG+"th X = "+X);
+					//count++;
+				//}
+				
+				tst(X);
+				
+
+				
+				
+			}
+
+			private void tst(double X) {
+				// TODO Auto-generated method stub
+				if(X>0.0)
+				{
+					new AlertDialog.Builder(this)
+					.setMessage(R.string.warning)
+					.setNeutralButton(R.string.error_ok, null)
+					.show();
+			return;
+				}
+				else
+				{
+					new AlertDialog.Builder(this)
+					.setMessage(R.string.good)
+					.setNeutralButton(R.string.error_ok, null)
+					.show();
+			return;
+				}
+				
+			}
+
+			private double randomInRange(double max, double min) {
+				// TODO Auto-generated method stub
+				return Math.random() * (max-min) + min;
+			}
+
+}
+
+//A1third.java
+
+package de.test.hello;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.SeekBar;
+import android.widget.TextView;
+import android.widget.SeekBar.OnSeekBarChangeListener;
+
+public class A1third extends Activity implements OnClickListener {
+	private static final File root = android.os.Environment.getExternalStorageDirectory();
+    /** Called when the activity is first created. */
+	SeekBar seekbar;
+	TextView value;
+	private Button nxtbtn;
+	double treshold[]=new double[21];
+	double tres[]=new double[21];
+	private File file;
+	private FileOutputStream f = null;
+	private PrintWriter out = null;
+    /** Called when the activity is first created. */
+	
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main4);
+        
+        nxtbtn = (Button)findViewById(R.id.button1);
+	    nxtbtn.setOnClickListener(this);
+	    
+	    addListenerOnButton();
+    
+    }
+
+
+	private void addListenerOnButton() {
+		
+		value = (TextView) findViewById(R.id.textview);
+		seekbar = (SeekBar) findViewById(R.id.seekbar);
+      
+      seekbar.setOnSeekBarChangeListener( new OnSeekBarChangeListener()
+      {
+      	public void onProgressChanged(SeekBar seekBar, int progress,boolean fromUser)
+      	{
+      		value.setText("  "+progress+"% Sensitivity");
+      		
+      		// set the threshold values here and save them in file!
+      		
+      		for (int idx = 0; idx <= 3; ++idx)
+    		{
+    	      		double randomInt = randomInRange(500.0,1000.0);
+    	      		
+    			treshold[idx]=randomInt;
+    			
+    		}
+
+    		//SLIGHTLY HIGHER TRESHOLD RANGE FOR TWO INPUT NODES OF FIRST HIDDEN LAYER
+
+    		for (int idx = 4; idx <= 9; ++idx)
+    		{
+    	      		double randomInt = randomInRange(1000.0,1250.0);
+    	      		
+    			treshold[idx]=randomInt;
+    		
+    		}
+
+    		//SLIGHTLY MORE HIGHER TRESHOLD RANGE FOR THREE INPUT NODES
+
+    		for (int idx = 10; idx <=13 ; ++idx)
+    		{
+    	      		double randomInt = randomInRange(1250.0,1500.0);
+    	      		
+    			treshold[idx]=randomInt;
+    		
+    		}
+
+    		//MEDIUM RANGE FOR FOUR AND SIX INPUT NODES IN THE FIRST AND SECOND INPUT LAYERS
+
+    		for (int idx = 13; idx <=17 ; ++idx)
+    		{
+    	      		double randomInt = randomInRange(1500.0,1700.0);
+    	      		
+    			treshold[idx]=randomInt;
+    		
+    		}
+    		
+    		// HIGH RANGE OF TRESHOLDS FOR NODES IN THE LAST HIDDEN LAYER
+
+    		for (int idx = 17; idx <=19 ; ++idx)
+    		{
+    	      		double randomInt = randomInRange(1700.0,1900.0);
+    	      		
+    			treshold[idx]=randomInt;
+    		
+    		}
+    		
+    		// VERY HIGH RANGE TRESHOLD FOR THE OUTPUT NODE
+
+    		for (int idx = 20; idx <=20 ; ++idx)
+    		{
+    	      		double randomInt = randomInRange(1900.0,2300.0);
+    	      		
+    			treshold[idx]=randomInt;
+    		
+    		}
+    		
+    		// pasu's work
+    		
+    		try {
+    			file = new File(root.getAbsolutePath(),"treshold.txt");
+    			f= new FileOutputStream(file);
+    			out = new PrintWriter(f);
+    			String s=null;
+    			for(int i=0;i<=20;i++)
+    			{
+    				tres[i]=(treshold[i]*progress)/100;
+    				s=Double.toString(tres[i]);
+    				out.println(s);
+    				out.println("\n");
+    			}
+       			out.flush();
+    			out.close();
+    			f.close();
+    		}catch(FileNotFoundException e) {
+    			e.printStackTrace();
+    		}catch(IOException e){
+    			e.printStackTrace();
+    		}	
+      	}
+
+         public void onStartTrackingTouch(SeekBar seekBar)
+         {
+         }
+
+         public void onStopTrackingTouch(SeekBar seekBar)
+         {
+         }
+});
+		
+	}
+
+
+	@Override
+	public void onClick(View v) {
+		
+		if(v == nxtbtn)
+		{
+			startActivity(new Intent(this, A1fourth.class));
+		}
+		
+	}
+	private double randomInRange(double max, double min) {
+		// TODO Auto-generated method stub
+		return Math.random() * (max-min) + min;
+	}
+}
+
+//A1fourth.java
+
+package de.test.hello;
+
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.util.Random;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.SeekBar;
+import android.widget.TextView;
+import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.Toast;
+
+public class A1fourth extends Activity{
+    /** Called when the activity is first created. */
+	private static final File root = android.os.Environment.getExternalStorageDirectory();
+	
+	double treshold[]=new double[21];
+	private File file;
+	private FileOutputStream f = null;
+	private PrintWriter out = null;
+	
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main5);
+        
+        nework();
+        
+        new AlertDialog.Builder(this)
+		.setMessage(R.string.trngcmpt)
+		.setNeutralButton(R.string.error_ok, null)
+		.show();
+		
+		//setResult(Activity.RESULT_OK);
+		startActivity(new Intent(this, A1first.class));
+        
+       
+    
+    }
+
+    private void nework() {
+		// TODO Auto-generated method stub
+		
+		double wts1[]=new double[4];
+		 double wts2[][]=new double[6][2];
+		 double wts3[][]=new double [4][3];
+		 double wts4[]=new double [4];
+		 double wts5[]=new double [4];
+		 double wts6[]=new double[6];
+		 double wts7[]=new double[4];
+		 double wts8[]=new double [2];
+		 double wts9[]=new double [2];
+		 double wts10[]=new double[2];
+		 double alpha=0.7;
+		 double treshold[]=new double [21];
+		 int FLAG=0;
+		 double inputs[]=new double[4];
+		
+		Random randomGenerator = new Random();
+		
+		/*//LOW TRESHOLD RANGE FOR SINGLE INPUT NODES
+
+		for (int idx = 0; idx <= 3; ++idx)
+		{
+	      		double randomInt = randomInRange(500.0,1000.0);
+	      		
+			treshold[idx]=randomInt;
+			
+		}
+
+		//SLIGHTLY HIGHER TRESHOLD RANGE FOR TWO INPUT NODES OF FIRST HIDDEN LAYER
+
+		for (int idx = 4; idx <= 9; ++idx)
+		{
+	      		double randomInt = randomInRange(1000.0,1250.0);
+	      		
+			treshold[idx]=randomInt;
+		
+		}
+
+		//SLIGHTLY MORE HIGHER TRESHOLD RANGE FOR THREE INPUT NODES
+
+		for (int idx = 10; idx <=13 ; ++idx)
+		{
+	      		double randomInt = randomInRange(1250.0,1500.0);
+	      		
+			treshold[idx]=randomInt;
+		
+		}
+
+		//MEDIUM RANGE FOR FOUR AND SIX INPUT NODES IN THE FIRST AND SECOND INPUT LAYERS
+
+		for (int idx = 13; idx <=17 ; ++idx)
+		{
+	      		double randomInt = randomInRange(1500.0,1700.0);
+	      		
+			treshold[idx]=randomInt;
+		
+		}
+		
+		// HIGH RANGE OF TRESHOLDS FOR NODES IN THE LAST HIDDEN LAYER
+
+		for (int idx = 17; idx <=19 ; ++idx)
+		{
+	      		double randomInt = randomInRange(1700.0,1900.0);
+	      		
+			treshold[idx]=randomInt;
+		
+		}
+		
+		// VERY HIGH RANGE TRESHOLD FOR THE OUTPUT NODE
+
+		for (int idx = 20; idx <=20 ; ++idx)
+		{
+	      		double randomInt = randomInRange(1900.0,2300.0);
+	      		
+			treshold[idx]=randomInt;
+		
+		}*/
+		
+		//pasu's work
+		
+		
+		String res = null;
+		try {
+		 
+		       InputStream in = openFileInput("treshold.txt");
+		 
+		       if (in != null) {
+		        // <span id="IL_AD9" class="IL_AD">prepare</span> the file for reading
+		         InputStreamReader input = new InputStreamReader(in);
+		         BufferedReader buffreader = new BufferedReader(input);
+		 
+		          res = "";
+		          String line=null;
+		          while (( line = buffreader.readLine()) != null) {
+		            res += line;
+		          }
+		          in.close();
+		          Toast.makeText(getApplicationContext(),"File Contents ==> " + res,Toast.LENGTH_SHORT).show();
+		          }else{
+		        }
+		 
+		} catch(Exception e){
+		       Toast.makeText(getApplicationContext(),e.toString() +   e.getMessage(),Toast.LENGTH_SHORT).show();
+		}
+
+		//SETTING WEIGHTS TO EACH NODE INPUTS AS Wtsi= (1/SQRT(N)[1 1 1 ... 1]) WHERE N IS THE NUMBER OF INPUTS
+
+		//double wts1[]=new double[4];
+		for (int idx = 0; idx <= 3; ++idx)
+			wts1[idx]=1;
+
+		//double wts2[][]=new double[6][2];
+		for (int idx = 0; idx <= 5; ++idx)
+			for(int i=0;i<=1;i++)
+				wts2[idx][i]=1/(Math.sqrt(2));
+
+		//double wts3[][]=new double [4][3];
+		for (int idx = 0; idx <= 3; ++idx)
+			for(int i=0;i<=2;i++)
+				wts3[idx][i]=1/(Math.sqrt(3));
+
+		//double wts4[]=new double [4];
+		for (int idx = 0; idx <= 3; ++idx)
+			wts4[idx]=1/(Math.sqrt(4));
+		
+
+		//double wts5[]=new double [4];
+		for (int idx = 0; idx <= 3; ++idx)
+			wts5[idx]=1/(Math.sqrt(4));
+		
+		//double wts6[]=new double[6];
+		for (int idx = 0; idx <= 5; ++idx)
+			wts6[idx]=1/(Math.sqrt(6));
+	
+		//double wts7[]=new double[4];
+		for (int idx = 0; idx <= 3; ++idx)
+			wts7[idx]=1/(Math.sqrt(4));
+
+		//double wts8[]=new double [2];
+		for (int idx = 0; idx <= 1; ++idx)
+			wts8[idx]=1/(Math.sqrt(2));
+		
+
+		//double wts9[]=new double [2];
+		for (int idx = 0; idx <= 1; ++idx)
+			wts9[idx]=1/(Math.sqrt(2));
+
+		//double wts10[]=new double[2];
+		for (int idx = 0; idx <= 1; ++idx)
+			wts10[idx]=1/(Math.sqrt(2));
+		
+		while(FLAG<30000)
+		{
+
+			//GENERATING RANDOM INPUTS, 4 OF THEM A,B,C, AND D
+	
+			for (int idx = 0; idx <= 3; ++idx)
+			{
+		      		double randomInt = randomInRange(200.0,1024.0);
+				inputs[idx]=randomInt;	
+			}
+
+			//SETTING THE FIRST FOUR NODES OF THE FIRST HIDDEN LAYER, EACH HAVING A SINGLE INPUT
+
+			double A=(double)inputs[0]*wts1[0];
+			double B=(double)inputs[1]*wts1[1];
+			double C=(double)inputs[2]*wts1[2];
+			double D=(double)inputs[3]*wts1[3];
+		
+			// FINDING THE WINNER
+
+			double large = Math.max(A,(Math.max(B,(Math.max(C,D)))));
+
+			// UPDATING THE WINNER NODE(S)
+
+			if(A==large)
+			{
+				wts1[0]=1;
+			}
+			if(B==large)
+			{
+				wts1[1]=1;
+			}
+			if(C==large)
+			{
+				wts1[2]=1;
+			}
+			if(D==large)
+			{
+				wts1[3]=1;
+			}
+	
+			//SETTING THE TWO INPUT NODES OF THE FIRST INPUT LAYER, 6 OF THEM
+	
+			double AB=((double)inputs[0]*wts2[0][0])+((double)inputs[1]*wts2[0][1]);
+			double AC=((double)inputs[0]*wts2[1][0])+((double)inputs[2]*wts2[1][1]);
+			double AD=((double)inputs[0]*wts2[2][0])+((double)inputs[3]*wts2[2][1]);
+			double BC=((double)inputs[1]*wts2[3][0])+((double)inputs[2]*wts2[3][1]);
+			double BD=((double)inputs[1]*wts2[4][0])+((double)inputs[3]*wts2[4][1]);
+			double CD=((double)inputs[2]*wts2[5][0])+((double)inputs[3]*wts2[5][1]);
+	
+			// FINDING THE WINNER
+	
+			double large1 = Math.max(AB,(Math.max(AC,(Math.max(AD,(Math.max(BC,(Math.max(BD,CD)))))))));
+	
+			//UPDATING THE WINNER NODE(S)
+	
+			/* UPDATE LIKE
+				NEW WEIGHT = (OLD WEIGHT/NORMALIZED OLD INPUT VECTOR) + (LEARNING CONSTANT * (INPUT - (OLD WEIGHT/NORMALIZED OLD INPUT VECTOR)))
+
+				IF INPUT VECTOR = [A B],
+				THEN NORMALIZED INPUT VECTOR = SQURE ROOT((A*A)+(B*B))*/
+
+			if(AB==large1)
+			{
+				wts2[0][0]=(wts2[0][0]/Math.sqrt((wts2[0][0]*wts2[0][0])+(wts2[0][1]*wts2[0][1])))+(alpha*(A-(wts2[0][0]/Math.sqrt((wts2[0][0]*wts2[0][0])+(wts2[0][1]*wts2[0][1])))));
+
+				wts2[0][1]=(wts2[0][1]/Math.sqrt((wts2[0][0]*wts2[0][0])+(wts2[0][1]*wts2[0][1])))+(alpha*(B-(wts2[0][1]/Math.sqrt((wts2[0][0]*wts2[0][0])+(wts2[0][1]*wts2[0][1])))));
+			}
+
+			if(AC==large1)
+			{
+				wts2[1][0]=(wts2[1][0]/Math.sqrt((wts2[1][0]*wts2[1][0])+(wts2[1][1]*wts2[1][1])))+(alpha*(A-(wts2[1][0]/Math.sqrt((wts2[1][0]*wts2[1][0])+(wts2[1][1]*wts2[1][1])))));
+
+				wts2[1][1]=(wts2[1][1]/Math.sqrt((wts2[1][0]*wts2[1][0])+(wts2[1][1]*wts2[1][1])))+(alpha*(C-(wts2[1][1]/Math.sqrt((wts2[1][0]*wts2[1][0])+(wts2[1][1]*wts2[1][1])))));
+			}
+
+			if(AD==large1)
+			{
+				wts2[2][0]=(wts2[2][0]/Math.sqrt((wts2[2][0]*wts2[2][0])+(wts2[2][1]*wts2[2][1])))+(alpha*(A-(wts2[2][0]/Math.sqrt((wts2[2][0]*wts2[2][0])+(wts2[2][1]*wts2[2][1])))));
+
+				wts2[2][1]=(wts2[2][1]/Math.sqrt((wts2[2][0]*wts2[2][0])+(wts2[2][1]*wts2[2][1])))+(alpha*(D-(wts2[2][1]/Math.sqrt((wts2[2][0]*wts2[2][0])+(wts2[2][1]*wts2[2][1])))));
+			}
+
+			if(BC==large1)
+			{
+				wts2[3][0]=(wts2[3][0]/Math.sqrt((wts2[3][0]*wts2[3][0])+(wts2[3][1]*wts2[3][1])))+(alpha*(B-(wts2[3][0]/Math.sqrt((wts2[3][0]*wts2[3][0])+(wts2[3][1]*wts2[3][1])))));
+
+				wts2[3][1]=(wts2[3][1]/Math.sqrt((wts2[3][0]*wts2[0][0])+(wts2[3][1]*wts2[3][1])))+(alpha*(C-(wts2[3][1]/Math.sqrt((wts2[3][0]*wts2[3][0])+(wts2[3][1]*wts2[3][1])))));
+			}
+
+			if(BD==large1)
+			{
+				wts2[4][0]=(wts2[4][0]/Math.sqrt((wts2[4][0]*wts2[4][0])+(wts2[4][1]*wts2[4][1])))+(alpha*(B-(wts2[4][0]/Math.sqrt((wts2[4][0]*wts2[4][0])+(wts2[4][1]*wts2[4][1])))));
+
+				wts2[4][1]=(wts2[4][1]/Math.sqrt((wts2[4][0]*wts2[4][0])+(wts2[4][1]*wts2[4][1])))+(alpha*(D-(wts2[4][1]/Math.sqrt((wts2[4][0]*wts2[4][0])+(wts2[4][1]*wts2[4][1])))));
+			}
+
+			if(CD==large1)
+			{
+				wts2[5][0]=(wts2[5][0]/Math.sqrt((wts2[5][0]*wts2[5][0])+(wts2[5][1]*wts2[5][1])))+(alpha*(C-(wts2[5][0]/Math.sqrt((wts2[5][0]*wts2[5][0])+(wts2[5][1]*wts2[5][1])))));
+
+				wts2[5][1]=(wts2[5][1]/Math.sqrt((wts2[5][0]*wts2[5][0])+(wts2[5][1]*wts2[5][1])))+(alpha*(D-(wts2[5][1]/Math.sqrt((wts2[5][0]*wts2[5][0])+(wts2[5][1]*wts2[5][1])))));
+			}
+
+			//SETTING THE THREE INPUT NODES OF THE FIRST HIDDEN LAYER
+
+			double ABC=((double)inputs[0]*wts3[0][0])+((double)inputs[1]*wts3[0][1])+((double)inputs[2]*wts3[0][2]);
+			double ABD=((double)inputs[0]*wts3[1][0])+((double)inputs[1]*wts3[1][1])+((double)inputs[3]*wts3[1][2]);
+			double ACD=((double)inputs[0]*wts3[2][0])+((double)inputs[2]*wts3[2][1])+((double)inputs[3]*wts3[2][2]);
+			double BCD=((double)inputs[1]*wts3[3][0])+((double)inputs[2]*wts3[3][1])+((double)inputs[3]*wts3[3][2]);
+	
+			//FINDING THE WINNER
+
+			double large2=Math.max(ABC,(Math.max(ABD,(Math.max(ACD,BCD)))));
+
+			//UPDATING THE WINNER NODE(S)
+
+			if(ABC==large2)
+			{
+				wts3[0][0]=(wts3[0][0]/Math.sqrt((wts3[0][0]*wts3[0][0])+(wts3[0][1]*wts3[0][1])+(wts3[0][2]*wts3[0][2])))+(alpha*(A-(wts3[0][0]/Math.sqrt((wts3[0][0]*wts3[0][0])+(wts3[0][1]*wts3[0][1])+(wts3[0][2]*wts3[0][2])))));
+
+				wts3[0][1]=(wts3[0][1]/Math.sqrt((wts3[0][0]*wts3[0][0])+(wts3[0][1]*wts3[0][1])+(wts3[0][2]*wts3[0][2])))+(alpha*(B-(wts3[0][1]/Math.sqrt((wts3[0][0]*wts3[0][0])+(wts3[0][1]*wts3[0][1])+(wts3[0][2]*wts3[0][2])))));
+
+				wts3[0][2]=(wts3[0][2]/Math.sqrt((wts3[0][0]*wts3[0][0])+(wts3[0][1]*wts3[0][1])+(wts3[0][2]*wts3[0][2])))+(alpha*(C-(wts3[0][2]/Math.sqrt((wts3[0][0]*wts3[0][0])+(wts3[0][1]*wts3[0][1])+(wts3[0][2]*wts3[0][2])))));
+			}
+
+			if(ABD==large2)
+			{
+				wts3[1][0]=(wts3[1][0]/Math.sqrt((wts3[1][0]*wts3[1][0])+(wts3[1][1]*wts3[1][1])+(wts3[1][2]*wts3[1][2])))+(alpha*(A-(wts3[1][0]/Math.sqrt((wts3[1][0]*wts3[1][0])+(wts3[1][1]*wts3[1][1])+(wts3[1][2]*wts3[1][2])))));
+
+				wts3[1][1]=(wts3[1][1]/Math.sqrt((wts3[1][0]*wts3[1][0])+(wts3[1][1]*wts3[1][1])+(wts3[1][2]*wts3[1][2])))+(alpha*(B-(wts3[1][1]/Math.sqrt((wts3[1][0]*wts3[1][0])+(wts3[1][1]*wts3[1][1])+(wts3[1][2]*wts3[1][2])))));
+
+				wts3[1][2]=(wts3[1][2]/Math.sqrt((wts3[1][0]*wts3[1][0])+(wts3[1][1]*wts3[1][1])+(wts3[1][2]*wts3[1][2])))+(alpha*(D-(wts3[1][2]/Math.sqrt((wts3[1][0]*wts3[1][0])+(wts3[1][1]*wts3[1][1])+(wts3[1][2]*wts3[1][2])))));
+			}
+
+			if(ACD==large2)
+			{
+				wts3[2][0]=(wts3[2][0]/Math.sqrt((wts3[2][0]*wts3[2][0])+(wts3[2][1]*wts3[2][1])+(wts3[2][2]*wts3[2][2])))+(alpha*(A-(wts3[2][0]/Math.sqrt((wts3[2][0]*wts3[2][0])+(wts3[2][1]*wts3[2][1])+(wts3[2][2]*wts3[2][2])))));
+
+				wts3[2][1]=(wts3[2][1]/Math.sqrt((wts3[2][0]*wts3[2][0])+(wts3[2][1]*wts3[2][1])+(wts3[2][2]*wts3[2][2])))+(alpha*(C-(wts3[2][1]/Math.sqrt((wts3[2][0]*wts3[2][0])+(wts3[2][1]*wts3[2][1])+(wts3[2][2]*wts3[2][2])))));
+
+				wts3[2][2]=(wts3[2][2]/Math.sqrt((wts3[2][0]*wts3[2][0])+(wts3[2][1]*wts3[2][1])+(wts3[2][2]*wts3[2][2])))+(alpha*(D-(wts3[2][2]/Math.sqrt((wts3[2][0]*wts3[2][0])+(wts3[2][1]*wts3[2][1])+(wts3[2][2]*wts3[2][2])))));
+			}
+
+			if(BCD==large2)
+			{
+				wts3[3][0]=(wts3[3][0]/Math.sqrt((wts3[3][0]*wts3[3][0])+(wts3[3][1]*wts3[3][1])+(wts3[3][2]*wts3[3][2])))+(alpha*(B-(wts3[3][0]/Math.sqrt((wts3[3][0]*wts3[3][0])+(wts3[3][1]*wts3[3][1])+(wts3[3][2]*wts3[3][2])))));
+
+				wts3[3][1]=(wts3[3][1]/Math.sqrt((wts3[3][0]*wts3[3][0])+(wts3[3][1]*wts3[3][1])+(wts3[3][2]*wts3[3][2])))+(alpha*(C-(wts3[3][1]/Math.sqrt((wts3[3][0]*wts3[3][0])+(wts3[3][1]*wts3[3][1])+(wts3[3][2]*wts3[3][2])))));
+
+				wts3[3][1]=(wts3[3][1]/Math.sqrt((wts3[3][0]*wts3[3][0])+(wts3[3][1]*wts3[3][1])+(wts3[3][2]*wts3[3][2])))+(alpha*(B-(wts3[3][1]/Math.sqrt((wts3[3][0]*wts3[3][0])+(wts3[3][1]*wts3[3][1])+(wts3[3][2]*wts3[3][2])))));
+			}
+
+
+			//SETTING THE FOUR INPUT NODE OF THE FIRST HIDDEN LAYER
+
+			double ABCD=((double)inputs[0]*wts4[0])+((double)inputs[1]*wts4[1])+((double)inputs[2]*wts4[2])+((double)inputs[3]*wts4[3]);
+
+			//FIRING THE NEURONS ACCORDING TO THE TRESHOLDS
+
+			if(A<treshold[0])
+				A=0.0;
+			if(B<treshold[1])
+				B=0.0;
+			if(C<treshold[2])
+				C=0.0;
+			if(D<treshold[3])
+				D=0.0;
+			if(AB<treshold[4])
+				AB=0.0;
+			if(AC<treshold[5])
+				AC=0.0;
+			if(AD<treshold[6])
+				AD=0.0;
+			if(BC<treshold[7])
+				BC=0.0;
+			if(BD<treshold[8])
+				BD=0.0;
+			if(CD<treshold[9])
+				CD=0.0;
+			if(ABC<treshold[10])
+				ABC=0.0;
+			if(ABD<treshold[11])
+				ABD=0.0;
+			if(ACD<treshold[12])
+				ACD=0.0;
+			if(BCD<treshold[13])
+				BCD=0.0;
+			if(ABCD<treshold[14])
+				ABCD=0.0;
+
+			//SETTING THE FOUR INPUT NEURON OF THE SECOND HIDDEN LAYER WHOSE INPUTS ARE A,B,C,AND D
+
+			double P=(A*wts5[0])+(B*wts5[1])+(C*wts5[2])+(D*wts5[3]);
+	
+			//SETTING THE SIX INPUT NEURON OF THE SECOND HIDDEN LAYER WHOSE INPUTS ARE AB,AC,AD,BC,BD,AND CD
+
+
+			double Q=(AB*wts6[0])+(AB*wts6[1])+(AC*wts6[2])+(BC*wts6[3])+(BD*wts6[4])+(CD*wts6[5]);
+
+			//SETTING THE FOUR INPUT NEURON OF THE SECOND HIDDEN LAYER WHOSE INPUTS ARE ABC,ABD,ACD AND BCD
+			double R=(ABC*wts7[0])+(ABD*wts7[1])+(ACD*wts7[2])+(BCD*wts7[3]);
+
+			//FINDING THE WINNER AMONG P,Q AND R
+
+			double large3=Math.max(P,(Math.max(Q,R)));
+		
+			//UPDATING THE WINNER NODE(S)
+
+			if(large3==P)
+			{
+				wts5[0]=(wts5[0]/Math.sqrt((wts5[0]*wts5[0])+(wts5[1]*wts5[1])+(wts5[2]*wts5[2])+(wts5[3]*wts5[3])))+(alpha*(A-(wts5[0]/Math.sqrt((wts5[0]*wts5[0])+(wts5[1]*wts5[1])+(wts5[2]*wts5[2])+(wts5[3]*wts5[3])))));
+
+				wts5[1]=(wts5[1]/Math.sqrt((wts5[0]*wts5[0])+(wts5[1]*wts5[1])+(wts5[2]*wts5[2])+(wts5[3]*wts5[3])))+(alpha*(B-(wts5[1]/Math.sqrt((wts5[0]*wts5[0])+(wts5[1]*wts5[1])+(wts5[2]*wts5[2])+(wts5[3]*wts5[3])))));
+
+				wts5[2]=(wts5[2]/Math.sqrt((wts5[0]*wts5[0])+(wts5[1]*wts5[1])+(wts5[2]*wts5[2])+(wts5[3]*wts5[3])))+(alpha*(C-(wts5[2]/Math.sqrt((wts5[0]*wts5[0])+(wts5[1]*wts5[1])+(wts5[2]*wts5[2])+(wts5[3]*wts5[3])))));
+
+				wts5[3]=(wts5[3]/Math.sqrt((wts5[0]*wts5[0])+(wts5[1]*wts5[1])+(wts5[2]*wts5[2])+(wts5[3]*wts5[3])))+(alpha*(D-(wts5[3]/Math.sqrt((wts5[0]*wts5[0])+(wts5[1]*wts5[1])+(wts5[2]*wts5[2])+(wts5[3]*wts5[3])))));
+			}
+		
+			if(large3==Q)
+			{
+				wts6[0]=(wts6[0]/Math.sqrt((wts6[0]*wts6[0])+(wts6[1]*wts6[1])+(wts6[2]*wts6[2])+(wts6[3]*wts6[3])+(wts6[4]*wts6[4])+(wts6[5]*wts6[5])))+(alpha*(AB-(wts6[0]/Math.sqrt((wts6[0]*wts6[0])+(wts6[1]*wts6[1])+(wts6[2]*wts6[2])+(wts6[3]*wts6[3])+(wts6[4]*wts6[4])+(wts6[5]*wts6[5])))));
+
+				wts6[1]=(wts6[1]/Math.sqrt((wts6[0]*wts6[0])+(wts6[1]*wts6[1])+(wts6[2]*wts6[2])+(wts6[3]*wts6[3])+(wts6[4]*wts6[4])+(wts6[5]*wts6[5])))+(alpha*(AC-(wts6[1]/Math.sqrt((wts6[0]*wts6[0])+(wts6[1]*wts6[1])+(wts6[2]*wts6[2])+(wts6[3]*wts6[3])+(wts6[4]*wts6[4])+(wts6[5]*wts6[5])))));
+
+				wts6[2]=(wts6[0]/Math.sqrt((wts6[0]*wts6[0])+(wts6[1]*wts6[1])+(wts6[2]*wts6[2])+(wts6[3]*wts6[3])+(wts6[4]*wts6[4])+(wts6[5]*wts6[5])))+(alpha*(AD-(wts6[2]/Math.sqrt((wts6[0]*wts6[0])+(wts6[1]*wts6[1])+(wts6[2]*wts6[2])+(wts6[3]*wts6[3])+(wts6[4]*wts6[4])+(wts6[5]*wts6[5])))));
+
+				wts6[3]=(wts6[0]/Math.sqrt((wts6[0]*wts6[0])+(wts6[1]*wts6[1])+(wts6[2]*wts6[2])+(wts6[3]*wts6[3])+(wts6[4]*wts6[4])+(wts6[5]*wts6[5])))+(alpha*(BC-(wts6[3]/Math.sqrt((wts6[0]*wts6[0])+(wts6[1]*wts6[1])+(wts6[2]*wts6[2])+(wts6[3]*wts6[3])+(wts6[4]*wts6[4])+(wts6[5]*wts6[5])))));
+
+				wts6[4]=(wts6[0]/Math.sqrt((wts6[0]*wts6[0])+(wts6[1]*wts6[1])+(wts6[2]*wts6[2])+(wts6[3]*wts6[3])+(wts6[4]*wts6[4])+(wts6[5]*wts6[5])))+(alpha*(BD-(wts6[4]/Math.sqrt((wts6[0]*wts6[0])+(wts6[1]*wts6[1])+(wts6[2]*wts6[2])+(wts6[3]*wts6[3])+(wts6[4]*wts6[4])+(wts6[5]*wts6[5])))));
+
+				wts6[5]=(wts6[0]/Math.sqrt((wts6[0]*wts6[0])+(wts6[1]*wts6[1])+(wts6[2]*wts6[2])+(wts6[3]*wts6[3])+(wts6[4]*wts6[4])+(wts6[5]*wts6[5])))+(alpha*(CD-(wts6[5]/Math.sqrt((wts6[0]*wts6[0])+(wts6[1]*wts6[1])+(wts6[2]*wts6[2])+(wts6[3]*wts6[3])+(wts6[4]*wts6[4])+(wts6[5]*wts6[5])))));
+			}
+	
+			if(large3==R)
+			{
+				wts7[0]=(wts7[0]/Math.sqrt((wts7[0]*wts7[0])+(wts7[1]*wts7[1])+(wts7[2]*wts7[2])+(wts7[3]*wts7[3])))+(alpha*(ABC-(wts7[0]/Math.sqrt((wts7[0]*wts7[0])+(wts7[1]*wts7[1])+(wts7[2]*wts7[2])+(wts7[3]*wts7[3])))));
+
+				wts7[1]=(wts7[1]/Math.sqrt((wts7[0]*wts7[0])+(wts7[1]*wts7[1])+(wts7[2]*wts7[2])+(wts7[3]*wts7[3])))+(alpha*(ABD-(wts7[1]/Math.sqrt((wts7[0]*wts7[0])+(wts7[1]*wts7[1])+(wts7[2]*wts7[2])+(wts7[3]*wts7[3])))));
+
+				wts7[2]=(wts7[2]/Math.sqrt((wts7[0]*wts7[0])+(wts7[1]*wts7[1])+(wts7[2]*wts7[2])+(wts7[3]*wts7[3])))+(alpha*(ACD-(wts7[2]/Math.sqrt((wts7[0]*wts7[0])+(wts7[1]*wts7[1])+(wts7[2]*wts7[2])+(wts7[3]*wts7[3])))));
+	
+				wts7[3]=(wts7[3]/Math.sqrt((wts7[0]*wts7[0])+(wts7[1]*wts7[1])+(wts7[2]*wts7[2])+(wts7[3]*wts7[3])))+(alpha*(BCD-(wts7[3]/Math.sqrt((wts7[0]*wts7[0])+(wts7[1]*wts7[1])+(wts7[2]*wts7[2])+(wts7[3]*wts7[3])))));
+
+			}
+		
+			//FIRING THE NEURONS ACCORDING TO THE TRESHOLDS
+	
+			if(P<treshold[15])
+				P=0.0;
+			if(Q<treshold[16])
+				Q=0.0;
+			if(R<treshold[17])
+				R=0.0;
+
+			//SETTING THE TWO INPUT NEURON OF THE THIRD HIDDEN LAYER WHOSE INPUTS ARE P AND Q
+
+			double S=(P*wts8[0])+(Q*wts8[1]);
+
+			//SETTING THE FOUR INPUT NEURON OF THE SECOND HIDDEN LAYER WHOSE INPUTS ARE R AND ABCD
+
+			double T=(R*wts9[0])+(ABCD*wts9[1]);
+
+			//FINDING THE WINNER
+
+			double large4=Math.max(S,T);
+
+			//UPDATING THE WINNER NODE(S)
+
+			if(large4==S)
+			{
+				wts8[0]=(wts8[0]/Math.sqrt((wts8[0]*wts8[0])+(wts8[1]*wts8[1])))+(alpha*(P-(wts8[0]/Math.sqrt((wts8[0]*wts8[0])+(wts8[1]*wts8[1])))));
+
+				wts8[1]=(wts8[1]/Math.sqrt((wts8[0]*wts8[0])+(wts8[1]*wts8[1])))+(alpha*(Q-(wts8[1]/Math.sqrt((wts8[0]*wts8[0])+(wts8[1]*wts8[1])))));
+			}
+
+			if(large4==T)
+			{
+				wts9[0]=(wts9[0]/Math.sqrt((wts9[0]*wts9[0])+(wts9[1]*wts9[1])))+(alpha*(R-(wts9[0]/Math.sqrt((wts9[0]*wts9[0])+(wts9[1]*wts9[1])))));
+
+				wts9[1]=(wts9[1]/Math.sqrt((wts9[0]*wts9[0])+(wts9[1]*wts9[1])))+(alpha*(ABCD-(wts9[1]/Math.sqrt((wts9[0]*wts9[0])+(wts9[1]*wts9[1])))));		
+		}
+		
+			//FIRING THE NEURONS ACCORDING TO THE TRESHOLDS
+
+			if(S<treshold[18])
+				S=0.0;
+			if(T<treshold[19])
+				T=0.0;
+
+			//SETTING THE TWO INPUT NEURON OF THE OUTPUT NEURON WHOSE INPUTS ARE S AND T
+
+			double X=(S*wts10[0])+(T*wts10[1]);
+
+			//UPDATING THE NODES
+
+			wts10[0]=(wts10[0]/Math.sqrt((wts10[0]*wts10[0])+(wts10[1]*wts10[1])))+(alpha*(S-(wts10[0]/Math.sqrt((wts10[0]*wts10[0])+(wts10[1]*wts10[1])))));
+
+			wts10[1]=(wts10[1]/Math.sqrt((wts10[0]*wts10[0])+(wts10[1]*wts10[1])))+(alpha*(T-(wts10[1]/Math.sqrt((wts10[0]*wts10[0])+(wts10[1]*wts10[1])))));
+			if(X<treshold[20])	
+				X=0.0;
+			else
+				X=1.0;
+
+			//PRINT ONLY IF THE OUTPUT NODE FIRES, THAT IS THE WARNING KEEP A COUNT
+
+		
+			//if(X==1.0)
+			//{
+			//	System.out.println("final "+FLAG+"th X = "+X);
+			//	count++;
+			//}
+
+			FLAG++;
+			if((FLAG%100)==0)
+			alpha=(alpha/2);
+		}// while closing
+		
+		// SAVING
+		
+		try {
+			file = new File(root.getAbsolutePath(),"wts1.txt");
+			f= new FileOutputStream(file);
+			out = new PrintWriter(f);
+			
+			String buffer;
+			for(int i=0;i<=3;i++)
+			{
+				buffer=Double.toString(wts1[i]);
+				out.println(buffer);
+				out.println("\n");
+			}
+			
+			out.flush();
+			out.close();
+			f.close();
+		}catch(FileNotFoundException e) {
+			e.printStackTrace();
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+		try {
+			file = new File(root.getAbsolutePath(),"wts2.txt");
+			f= new FileOutputStream(file);
+			out = new PrintWriter(f);
+		
+			String buffer;
+			for(int i=0;i<=5;i++)
+			{
+				for(int j=0;j<2;j++)
+				{
+				buffer=Double.toString(wts2[i][j]);
+				out.println(buffer);
+				out.println("\n");
+				}
+			}
+			
+			out.flush();
+			out.close();
+			f.close();
+		}catch(FileNotFoundException e) {
+			e.printStackTrace();
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+		try {
+			file = new File(root.getAbsolutePath(),"wts3.txt");
+			f= new FileOutputStream(file);
+			out = new PrintWriter(f);
+			
+			String buffer;
+			for(int i=0;i<=3;i++)
+			{
+				for(int j=0;j<2;j++)
+				{
+				buffer=Double.toString(wts3[i][j]);
+				out.println(buffer);
+				out.println("\n");
+				}
+			}
+			
+			out.flush();
+			out.close();
+			f.close();
+		}catch(FileNotFoundException e) {
+			e.printStackTrace();
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+		try {
+			file = new File(root.getAbsolutePath(),"wts4.txt");
+			f= new FileOutputStream(file);
+			out = new PrintWriter(f);
+			
+			String buffer;
+			for(int i=0;i<=3;i++)
+			{
+				buffer=Double.toString(wts4[i]);
+				out.println(buffer);
+				out.println("\n");
+			}
+			
+			out.flush();
+			out.close();
+			f.close();
+		}catch(FileNotFoundException e) {
+			e.printStackTrace();
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+		try {
+			file = new File(root.getAbsolutePath(),"wts5.txt");
+			f= new FileOutputStream(file);
+			out = new PrintWriter(f);
+			
+			String buffer;
+			for(int i=0;i<=3;i++)
+			{
+				buffer=Double.toString(wts5[i]);
+				out.println(buffer);
+				out.println("\n");
+			}
+			
+			out.flush();
+			out.close();
+			f.close();
+		}catch(FileNotFoundException e) {
+			e.printStackTrace();
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+		try {
+			file = new File(root.getAbsolutePath(),"wts6.txt");
+			f= new FileOutputStream(file);
+			out = new PrintWriter(f);
+			
+			String buffer;
+			for(int i=0;i<=5;i++)
+			{
+				buffer=Double.toString(wts6[i]);
+				out.println(buffer);
+				out.println("\n");
+			}
+			
+			out.flush();
+			out.close();
+			f.close();
+		}catch(FileNotFoundException e) {
+			e.printStackTrace();
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+		try {
+			file = new File(root.getAbsolutePath(),"wts7.txt");
+			f= new FileOutputStream(file);
+			out = new PrintWriter(f);
+			
+			String buffer;
+			for(int i=0;i<=3;i++)
+			{
+				buffer=Double.toString(wts7[i]);
+				out.println(buffer);
+				out.println("\n");
+			}
+			
+			out.flush();
+			out.close();
+			f.close();
+		}catch(FileNotFoundException e) {
+			e.printStackTrace();
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+		try {
+			file = new File(root.getAbsolutePath(),"wts8.txt");
+			f= new FileOutputStream(file);
+			out = new PrintWriter(f);
+			
+			String buffer;
+			for(int i=0;i<=1;i++)
+			{
+				
+				buffer=Double.toString(wts8[i]);
+				out.println(buffer);
+				out.println("\n");
+			}
+			
+			out.flush();
+			out.close();
+			f.close();
+		}catch(FileNotFoundException e) {
+			e.printStackTrace();
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+		try {
+			file = new File(root.getAbsolutePath(),"wts9.txt");
+			f= new FileOutputStream(file);
+			out = new PrintWriter(f);
+			String buffer;
+			for(int i=0;i<=1;i++)
+			{
+				buffer=Double.toString(wts9[i]);
+				out.println(buffer);
+				out.println("\n");
+			}
+			
+			out.flush();
+			out.close();
+			f.close();
+		}catch(FileNotFoundException e) {
+			e.printStackTrace();
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+		try {
+			file = new File(root.getAbsolutePath(),"wts10.txt");
+			f= new FileOutputStream(file);
+			out = new PrintWriter(f);
+			String buffer;
+			for(int i=0;i<=1;i++)
+			{
+				buffer=Double.toString(wts10[i]);
+				out.println(buffer);
+				out.println("\n");
+			}
+			
+			out.flush();
+			out.close();
+			f.close();
+		}catch(FileNotFoundException e) {
+			e.printStackTrace();
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+		try {
+			file = new File(root.getAbsolutePath(),"alpha.txt");
+			f= new FileOutputStream(file);
+			out = new PrintWriter(f);
+			String buffer;
+			
+				buffer=Double.toString(alpha);
+				out.println(buffer);
+				out.println("\n");
+			out.flush();
+			out.close();
+			f.close();
+		}catch(FileNotFoundException e) {
+			e.printStackTrace();
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+		try {
+			file = new File(root.getAbsolutePath(),"flag.txt");
+			f= new FileOutputStream(file);
+			out = new PrintWriter(f);
+			String buffer;
+			
+				buffer=Integer.toString(FLAG);
+				out.println(buffer);
+				out.println("\n");
+			out.flush();
+			out.close();
+			f.close();
+		}catch(FileNotFoundException e) {
+			e.printStackTrace();
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+		
+		 
+		
+	}
+	
+	
+	private double randomInRange(double max, double min) {
+		// TODO Auto-generated method stub
+		return Math.random() * (max-min) + min;
+	}
+
+
+}
+
+//A1help.java
+
+package de.test.hello;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.widget.TextView;
+
+public class A1help extends Activity {
+    /** Called when the activity is first created. */
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.mainhelp);
+        
+        TextView helloTxt = (TextView)findViewById(R.id.helptxt);
+        helloTxt.setText(readTxt());
+    }
+    
+    private String readTxt(){
+
+     InputStream inputStream = getResources().openRawResource(R.raw.helptxt);
+     
+     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+     
+     int i;
+  try {
+   i = inputStream.read();
+   while (i != -1)
+      {
+       byteArrayOutputStream.write(i);
+       i = inputStream.read();
+      }
+      inputStream.close();
+  } catch (IOException e) {
+   // TODO Auto-generated catch block
+   e.printStackTrace();
+  }
+  
+     return byteArrayOutputStream.toString();
+    }
+}
